@@ -1,29 +1,27 @@
-# Jared Owen Animations Website Prototype
+# Jared Owen Animations Website
 
-This is a static website prototype for the Jared Owen 3D Animations site. It preserves the same core content and pages while giving the site a cleaner, modern design.
+Static website for [Jared Owen Animations](https://www.youtube.com/@JaredOwen) — clean, modern HTML/CSS rebuild of the original Wix site, designed to be hosted for free on GitHub Pages.
 
-## Included pages
+## Pages
 
-- `index.html` — homepage with hero section, featured videos, and social links
-- `about.html` — Jared's bio and featured press / channel links
-- `learn-blender.html` — Blender learning resources and recommendations
-- `support.html` — Patreon, PayPal, and support details
-- `styles.css` — shared site styling
+- `index.html` — homepage with full-bleed hero video, channel stats, and a featured-videos rail
+- `about.html` — Jared's bio, headshot, and press mentions
+- `learn-blender.html` — Blender learning resources and recommended starting paths
+- `support.html` — Patreon membership, supporter list, and one-time PayPal donations
+- `assets/` — logo, hero loop video and poster, headshot, social-icon PNGs
+
+Each page is self-contained: HTML + inline `<style>` + inline `<script>`. No build step, no external dependencies beyond Google Fonts.
 
 ## GitHub Pages deployment
 
 1. Create a GitHub repository for the site.
-2. Copy or commit these files into the repository root.
-3. In the repository settings, enable GitHub Pages from the `main` branch and root folder.
-4. If you want to use `jaredowen3d.com`, add the custom domain under GitHub Pages settings and configure your DNS to point to GitHub Pages.
+2. Commit these files into the repository root.
+3. In **Settings → Pages**, enable GitHub Pages from the `main` branch, root folder.
+4. To use `jaredowen3d.com`, add the custom domain under GitHub Pages settings and update the registrar's DNS to point at GitHub Pages.
 
-## Next improvements
+## Possible next steps
 
-- Add a looping hero video background using `assets/hero-loop.mp4` and a poster image at `assets/hero-poster.jpg`.
-- Add real video thumbnails or embedded playlists for the featured videos.
-- Add a mobile menu toggle if you want a more compact navigation on small screens. (Already included in this version.)
-- Add a newsletter/contact form using a service like Formspree or Getform.
-
-## Notes
-
-This static site is a good first step for GitHub Pages. It can grow later into a more dynamic site with YouTube API integration, a newsletter, or a blog section.
+- Auto-pull the latest YouTube videos into the homepage rail via a scheduled GitHub Action (no exposed API keys, fully static).
+- Hook up a contact form via [Formspree](https://formspree.io/) for press / sponsor inquiries.
+- Add a newsletter signup (Buttondown, ConvertKit) when there's an audience to send to.
+- Re-encode `assets/hero-loop.mp4` (~13 MB → ~3 MB) to reduce bandwidth before launch.

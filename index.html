@@ -3,102 +3,315 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jared Owen Animations</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Jared Owen Animations — 3D animations that explain how things work</title>
+  <meta name="description" content="Jared Owen creates 3D animations in Blender that explain how things work — bridges, buildings, engines, telescopes, spacecraft and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #ffffff;
+      --surface: #f7fbff;
+      --ink: #0e1e3f;
+      --ink-soft: #4b587a;
+      --line: #e6ebf2;
+      --accent: #2758c4;
+      --accent-hover: #1d4aa8;
+      --accent-soft: #eaf0fc;
+      --shadow-sm: 0 6px 20px rgba(14, 30, 63, 0.08);
+      --shadow-md: 0 24px 60px rgba(14, 30, 63, 0.18);
+      --shadow-lg: 0 40px 100px rgba(14, 30, 63, 0.22);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Inter Tight', system-ui, sans-serif;
+      background: var(--paper); color: var(--ink);
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Header — deep navy blue banner, white text */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 2.5rem;
+      background: var(--ink);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em;
+      color: white;
+    }
+    .brand img { height: 2.4rem; width: auto; }
+    .nav { display: flex; gap: 0.3rem; align-items: center; }
+    .nav a {
+      padding: 0.55rem 0.95rem; font-weight: 500; font-size: 0.94rem;
+      color: white; border-radius: 999px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav a:hover { color: white; background: #1f3463; }
+    .nav .yt-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; padding: 0.35rem 0.5rem; margin-left: 0.7rem;
+      border-radius: 8px;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .nav .yt-btn img { height: 1.5rem; width: auto; display: block; }
+    .nav .yt-btn:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-1px); }
+
+    /* Hero — full-bleed video, white text directly on video */
+    .hero {
+      position: relative;
+      height: calc(100vh - 70px); min-height: 600px;
+      overflow: hidden; background: #000;
+    }
+    .hero video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    /* Subtle bottom vignette so white text stays readable.
+       Top half of the video is fully visible; only the lower band darkens slightly. */
+    .hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, transparent 35%, rgba(10, 22, 50, 0.55) 100%);
+    }
+
+    .hero-content-wrap {
+      position: relative; z-index: 2;
+      max-width: 1320px; height: 100%;
+      margin: 0 auto; padding: 0 2.5rem;
+      display: flex; align-items: end;
+      pointer-events: none;
+    }
+    .hero-content {
+      pointer-events: auto;
+      max-width: 40rem;
+      margin-bottom: 3rem;
+      color: white;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.76rem;
+      font-weight: 700; color: white; margin-bottom: 1.4rem;
+      background: rgba(10, 22, 50, 0.55);
+      padding: 0.4rem 0.95rem 0.42rem;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+    .eyebrow::before {
+      content: ''; width: 22px; height: 1px; background: white;
+    }
+    .hero-content h1 {
+      font-size: clamp(2.6rem, 5.2vw, 4.6rem); line-height: 0.98;
+      font-weight: 800; letter-spacing: -0.03em; margin: 0 0 1.3rem;
+      color: white;
+    }
+    /* Lighter sky-blue accent so the brand color survives bright video frames. */
+    .hero-content h1 .accent { color: #8fb6ff; }
+    .hero-content p.lede {
+      font-size: 1.18rem; color: rgba(255, 255, 255, 0.92);
+      margin: 0 0 2rem; max-width: 34rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    .cta-row { display: flex; gap: 0.7rem; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: white; color: var(--ink);
+      padding: 0.95rem 1.5rem; border-radius: 999px;
+      font-weight: 600; font-size: 0.98rem;
+      transition: transform 0.15s, background 0.15s, color 0.15s;
+      text-shadow: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+    .btn-primary:hover { background: var(--accent); color: white; transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.95rem 1.4rem; color: white; font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.55); border-radius: 999px;
+      background: #13264d;
+      transition: background 0.15s, border-color 0.15s;
+      text-shadow: none;
+    }
+    .btn-ghost:hover { background: #1f3463; border-color: white; }
+
+    /* Stats — white surface, blue accents */
+    .stats {
+      background: var(--surface); border-bottom: 1px solid var(--line);
+    }
+    .stats-inner {
+      max-width: 1320px; margin: 0 auto; padding: 3rem 2.5rem;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+    }
+    .stat .num {
+      font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .stat .num .accent { color: var(--accent); }
+    .stat .label { font-size: 0.92rem; color: var(--ink-soft); margin-top: 0.3rem; }
+
+    /* Latest videos rail */
+    .rail-section {
+      padding: 5.5rem 2.5rem; max-width: 1320px; margin: 0 auto;
+    }
+    .rail-head {
+      display: flex; justify-content: space-between; align-items: end;
+      margin-bottom: 2.5rem; gap: 2rem;
+    }
+    .rail-head h2 {
+      font-size: clamp(1.9rem, 3.2vw, 2.7rem); font-weight: 700;
+      letter-spacing: -0.025em; margin: 0; color: var(--ink);
+    }
+    .rail-head .meta { color: var(--ink-soft); font-size: 0.95rem; }
+    .rail {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem;
+    }
+    .v-card {
+      position: relative; aspect-ratio: 16/9; border-radius: 1rem;
+      overflow: hidden; background-size: cover; background-position: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .v-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .v-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(14, 30, 63, 0.85));
+    }
+    .v-card .info {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 1.1rem 1.25rem 1.2rem;
+      z-index: 2;
+    }
+    .v-card .info .tag {
+      display: inline-block; background: var(--accent); color: white;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      padding: 0.22rem 0.55rem; border-radius: 0.3rem;
+      text-transform: uppercase; margin-bottom: 0.55rem;
+    }
+    .v-card .info h3 {
+      margin: 0; font-size: 1.1rem; font-weight: 600; color: white;
+      line-height: 1.25;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+    .v-card .play {
+      position: absolute; top: 1rem; right: 1rem; z-index: 2;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95); color: var(--accent);
+      display: grid; place-items: center; font-size: 0.85rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    }
+
+    footer {
+      padding: 2.5rem 2.5rem; text-align: center;
+      color: var(--ink-soft); font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    @media (max-width: 900px) {
+      .topbar { padding: 0.9rem 1.2rem; }
+      .nav a:not(.yt-btn) { display: none; }
+      .hero { height: 80vh; min-height: 520px; }
+      .hero-content-wrap { padding: 0 1.2rem; }
+      .hero-content { margin-bottom: 1.8rem; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); padding: 2.2rem 1.4rem; gap: 1.4rem; }
+      .rail-section { padding: 3.5rem 1.4rem; }
+      .rail { grid-template-columns: 1fr; }
+      .rail-head { flex-direction: column; align-items: start; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-brand">
-      <a href="index.html">Jared Owen Animations</a>
-    </div>
-    <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav id="site-nav" class="site-nav" aria-label="Main site navigation">
+  <header class="topbar">
+    <a href="index.html" class="brand" aria-label="Jared Owen Animations — home">
+      <img src="assets/logo.png" alt="Jared Owen Animations" />
+    </a>
+    <nav class="nav">
       <a href="index.html">Welcome</a>
       <a href="about.html">About</a>
       <a href="learn-blender.html">Learn Blender</a>
       <a href="support.html">Support</a>
-      <a class="button button--ghost" href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">YouTube</a>
+      <a href="https://www.youtube.com/@JaredOwen" class="yt-btn" aria-label="Visit Jared on YouTube">
+        <img src="assets/youtube-logo.png" alt="YouTube" />
+      </a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <video class="hero-video" autoplay muted playsinline loop poster="assets/hero-poster.jpg">
-        <source src="assets/hero-loop.mp4" type="video/mp4" />
-        Your browser does not support the video background.
-      </video>
-      <div class="hero-overlay"></div>
+  <section class="hero">
+    <video id="hero-video" autoplay muted playsinline loop preload="auto" tabindex="-1" aria-hidden="true" poster="assets/hero-poster.jpg">
+      <source src="assets/hero-loop.mp4" type="video/mp4" />
+      <track kind="subtitles" src="assets/hero-captions.vtt" srclang="en" label="English" default />
+      <track kind="descriptions" src="assets/hero-descriptions.vtt" srclang="en" label="English descriptions" />
+    </video>
+    <div class="hero-content-wrap">
       <div class="hero-content">
-        <p class="eyebrow">3D animations with a purpose</p>
-        <h1>I create 3D animations that explain how things work</h1>
-        <p>Discover educational Blender animations, support the channel, and explore tools for learning 3D.</p>
-        <div class="hero-actions">
-          <a class="button button--primary" href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">Visit YouTube</a>
-          <a class="button button--secondary" href="about.html">Learn more</a>
+        <div class="eyebrow">3D Animator · Educator</div>
+        <h1>I create<br><span class="accent">3D Animations</span><br>that explain how things work</h1>
+        <p class="lede">Bridges, buildings, engines, telescopes, spacecraft and more — Jared turns complex objects into clear, beautiful 3D video animations using Blender.</p>
+        <div class="cta-row">
+          <a href="https://www.youtube.com/@JaredOwen" class="btn-primary">Visit the channel →</a>
+          <a href="about.html" class="btn-ghost">About Jared</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="section section--intro">
-      <div class="section-grid">
-        <article>
-          <h2>About Jared</h2>
-          <p>Jared is a 3D animator who turns complex ideas into clear videos using Blender and storytelling.</p>
-          <a href="about.html" class="link-button">Read the story</a>
-        </article>
-        <article>
-          <h2>Learn Blender</h2>
-          <p>Start with the best beginner resources and tutorials recommended by a Blender creator.</p>
-          <a href="learn-blender.html" class="link-button">Find resources</a>
-        </article>
-        <article>
-          <h2>Support the channel</h2>
-          <p>Support Jared on Patreon, donate through PayPal, or share the videos with friends.</p>
-          <a href="support.html" class="link-button">Support now</a>
-        </article>
-      </div>
-    </section>
+  <div class="stats">
+    <div class="stats-inner">
+      <div class="stat"><div class="num"><span class="accent">1.4</span>M</div><div class="label">YouTube subscribers</div></div>
+      <div class="stat"><div class="num"><span class="accent">200</span>M+</div><div class="label">Total views</div></div>
+      <div class="stat"><div class="num"><span class="accent">80</span>+</div><div class="label">Animations</div></div>
+      <div class="stat"><div class="num"><span class="accent">8</span>yrs</div><div class="label">Of Blender work</div></div>
+    </div>
+  </div>
 
-    <section class="section section--featured">
-      <div class="section-header">
-        <h2>Featured videos</h2>
-        <p>Explore some of the channel's most popular explainers and animation breakdowns.</p>
-      </div>
-      <div class="cards">
-        <article class="card">
-          <img class="card-thumb" src="https://img.youtube.com/vi/VvQUGQVwrWE/0.jpg" alt="How does a Space Telescope Work? video thumbnail" />
+  <section class="rail-section">
+    <div class="rail-head">
+      <h2>Latest from the channel</h2>
+      <div class="meta">Auto-updated weekly from YouTube →</div>
+    </div>
+    <div class="rail">
+      <a class="v-card" href="https://www.youtube.com/watch?v=VvQUGQVwrWE"
+         style="background-image:url('https://img.youtube.com/vi/VvQUGQVwrWE/maxresdefault.jpg');">
+        <div class="play">▶</div>
+        <div class="info">
+          <span class="tag">Space</span>
           <h3>How does a Space Telescope Work?</h3>
-          <p>Learn about Hubble, Webb, and the science behind space telescopes.</p>
-          <a href="https://www.youtube.com/watch?v=VvQUGQVwrWE" target="_blank" rel="noreferrer">Watch on YouTube</a>
-        </article>
-        <article class="card">
-          <img class="card-thumb" src="https://img.youtube.com/vi/G2e4K-wD1KY/0.jpg" alt="What's inside Tower Bridge? video thumbnail" />
+        </div>
+      </a>
+      <a class="v-card" href="https://www.youtube.com/watch?v=G2e4K-wD1KY"
+         style="background-image:url('https://img.youtube.com/vi/G2e4K-wD1KY/maxresdefault.jpg');">
+        <div class="play">▶</div>
+        <div class="info">
+          <span class="tag">Engineering</span>
           <h3>What's inside Tower Bridge?</h3>
-          <p>A detailed animation of the London landmark and how the mechanisms work.</p>
-          <a href="https://www.youtube.com/watch?v=G2e4K-wD1KY" target="_blank" rel="noreferrer">Watch on YouTube</a>
-        </article>
-      </div>
-    </section>
+        </div>
+      </a>
+      <a class="v-card" href="https://www.youtube.com/@JaredOwen"
+         style="background-image:url('https://img.youtube.com/vi/VvQUGQVwrWE/maxresdefault.jpg');">
+        <div class="play">▶</div>
+        <div class="info">
+          <span class="tag">Channel</span>
+          <h3>Browse 80+ animations</h3>
+        </div>
+      </a>
+    </div>
+  </section>
 
-    <section class="section section--social">
-      <div>
-        <h2>Find Jared online</h2>
-        <p>Follow Jared on social media and support the work on Patreon.</p>
-      </div>
-      <div class="social-links">
-        <a href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">YouTube</a>
-        <a href="https://www.facebook.com/JaredOwen3d" target="_blank" rel="noreferrer">Facebook</a>
-        <a href="http://www.instagram.com/jaredowenanimations" target="_blank" rel="noreferrer">Instagram</a>
-        <a href="https://www.patreon.com/jaredowenanimations" target="_blank" rel="noreferrer">Patreon</a>
-        <a href="https://www.twitter.com/jaredowen3d" target="_blank" rel="noreferrer">Twitter</a>
-        <a href="https://www.tiktok.com/@jaredowenanimations" target="_blank" rel="noreferrer">TikTok</a>
-      </div>
-    </section>
-  </main>
+  <footer>© 2026 Jared Owen Animations</footer>
 
-  <footer class="site-footer">
-    <p>© 2025 Jared Owen Animations. All Rights Reserved.</p>
-  </footer>
-  <script src="scripts.js"></script>
+  <script>
+    // Robust autoplay: try to start, retry on canplay, fall back to first click.
+    document.querySelectorAll('video').forEach(v => {
+      v.muted = true;
+      const tryPlay = () => v.play().catch(err => console.warn('autoplay blocked, will start on first user interaction:', err));
+      tryPlay();
+      v.addEventListener('canplay', tryPlay, { once: true });
+      v.addEventListener('error', () => console.error('video failed to load. Source path:', v.currentSrc || v.querySelector('source')?.src, v.error));
+      document.addEventListener('click', tryPlay, { once: true });
+    });
+  </script>
 </body>
 </html>

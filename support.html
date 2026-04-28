@@ -4,57 +4,280 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Support | Jared Owen Animations</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="Support Jared Owen's 3D animations on Patreon, with a one-time PayPal donation, or by sharing the videos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #ffffff;
+      --surface: #f7fbff;
+      --ink: #0e1e3f;
+      --ink-soft: #4b587a;
+      --line: #e6ebf2;
+      --accent: #2758c4;
+      --accent-hover: #1d4aa8;
+      --accent-soft: #eaf0fc;
+      --patreon: #ff424d;
+      --paypal: #003087;
+      --shadow-sm: 0 6px 20px rgba(14, 30, 63, 0.08);
+      --shadow-md: 0 24px 60px rgba(14, 30, 63, 0.18);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Inter Tight', system-ui, sans-serif;
+      background: var(--paper); color: var(--ink);
+      line-height: 1.55; -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 2.5rem;
+      background: var(--ink);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em;
+      color: white;
+    }
+    .brand img { height: 2.4rem; width: auto; }
+    .nav { display: flex; gap: 0.3rem; align-items: center; }
+    .nav a {
+      padding: 0.55rem 0.95rem; font-weight: 500; font-size: 0.94rem;
+      color: white; border-radius: 999px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav a:hover { color: white; background: #1f3463; }
+    .nav a.active { background: #1f3463; }
+    .nav .yt-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; padding: 0.35rem 0.5rem; margin-left: 0.7rem;
+      border-radius: 8px;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .nav .yt-btn img { height: 1.5rem; width: auto; display: block; }
+    .nav .yt-btn:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-1px); }
+
+    /* Page header band */
+    .page-head {
+      background: var(--ink); color: white;
+      padding: 4rem 2.5rem 4.5rem;
+      border-bottom: 4px solid var(--accent);
+    }
+    .page-head-inner { max-width: 1100px; margin: 0 auto; }
+    .page-head .crumb {
+      letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.78rem;
+      font-weight: 700; color: #8fb6ff; margin-bottom: 1rem;
+    }
+    .page-head h1 {
+      font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1;
+      font-weight: 800; letter-spacing: -0.03em; margin: 0;
+    }
+    .page-head .subhead {
+      margin-top: 1rem; font-size: 1.15rem; color: rgba(255, 255, 255, 0.85);
+      max-width: 40rem;
+    }
+
+    /* Patreon hero card */
+    .patreon-section {
+      max-width: 1100px; margin: 0 auto; padding: 4rem 2.5rem 2rem;
+    }
+    .patreon-card {
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 1.4rem; padding: 2.5rem 2.6rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 2.5rem; align-items: center;
+      box-shadow: var(--shadow-sm);
+      border-left: 5px solid var(--patreon);
+    }
+    .patreon-card .label {
+      font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
+      font-weight: 700; color: var(--patreon); margin-bottom: 0.6rem;
+    }
+    .patreon-card h2 {
+      font-size: clamp(1.7rem, 2.6vw, 2.1rem); font-weight: 700;
+      letter-spacing: -0.02em; margin: 0 0 0.8rem; color: var(--ink);
+    }
+    .patreon-card p {
+      margin: 0; color: var(--ink-soft); font-size: 1.04rem; max-width: 38rem;
+    }
+    .btn-patreon {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--patreon); color: white;
+      padding: 1rem 1.7rem; border-radius: 999px;
+      font-weight: 700; font-size: 1rem; white-space: nowrap;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .btn-patreon:hover { background: #e8313c; transform: translateY(-1px); }
+
+    /* Supporters list */
+    .supporters {
+      max-width: 1100px; margin: 0 auto; padding: 2rem 2.5rem 4rem;
+    }
+    .supporters h2 {
+      font-size: clamp(1.5rem, 2.4vw, 1.9rem); font-weight: 700;
+      letter-spacing: -0.02em; margin: 0 0 0.4rem;
+    }
+    .supporters .note {
+      color: var(--ink-soft); font-style: italic; margin: 0 0 2rem;
+      font-size: 0.98rem;
+    }
+    .supporter-grid {
+      display: grid; gap: 0.9rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .supporter-grid span {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: 0.7rem; padding: 0.95rem 1.2rem;
+      font-weight: 600; color: var(--ink);
+      text-align: center; font-size: 1.02rem;
+    }
+
+    /* Other ways */
+    .other-ways {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 4rem 2.5rem;
+    }
+    .other-inner { max-width: 1100px; margin: 0 auto; }
+    .other-ways h2 {
+      font-size: clamp(1.7rem, 2.8vw, 2.2rem); font-weight: 700;
+      letter-spacing: -0.02em; margin: 0 0 0.5rem;
+    }
+    .other-ways .lead {
+      color: var(--ink-soft); margin: 0 0 2.4rem; font-size: 1.05rem;
+      max-width: 40rem;
+    }
+    .other-grid {
+      display: grid; gap: 1.4rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .other-card {
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 1.2rem; padding: 1.8rem 1.9rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .other-card h3 {
+      margin: 0 0 0.2rem; font-size: 1.2rem; font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .other-card p {
+      margin: 0 0 1rem; color: var(--ink-soft); flex-grow: 1;
+    }
+    .btn-paypal {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.5rem; align-self: flex-start;
+      background: var(--paypal); color: white;
+      padding: 0.85rem 1.4rem; border-radius: 999px;
+      font-weight: 700; font-size: 0.96rem;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .btn-paypal:hover { background: #00256e; transform: translateY(-1px); }
+    .btn-yt {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.5rem; align-self: flex-start;
+      background: var(--ink); color: white;
+      padding: 0.85rem 1.4rem; border-radius: 999px;
+      font-weight: 600; font-size: 0.96rem;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .btn-yt:hover { background: var(--accent); transform: translateY(-1px); }
+
+    footer {
+      padding: 2.5rem; text-align: center;
+      color: var(--ink-soft); font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    @media (max-width: 900px) {
+      .topbar { padding: 0.9rem 1.2rem; }
+      .nav a:not(.yt-btn) { display: none; }
+      .page-head { padding: 2.8rem 1.4rem 3rem; }
+      .patreon-section { padding: 2.8rem 1.4rem 1rem; }
+      .patreon-card {
+        grid-template-columns: 1fr; padding: 1.8rem 1.6rem; gap: 1.6rem;
+      }
+      .supporters { padding: 1rem 1.4rem 2.8rem; }
+      .other-ways { padding: 2.8rem 1.4rem; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-brand">
-      <a href="index.html">Jared Owen Animations</a>
-    </div>
-    <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav id="site-nav" class="site-nav" aria-label="Main site navigation">
+  <header class="topbar">
+    <a href="index.html" class="brand" aria-label="Jared Owen Animations — home">
+      <img src="assets/logo.png" alt="Jared Owen Animations" />
+    </a>
+    <nav class="nav">
       <a href="index.html">Welcome</a>
       <a href="about.html">About</a>
       <a href="learn-blender.html">Learn Blender</a>
       <a href="support.html" class="active">Support</a>
-      <a class="button button--ghost" href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">YouTube</a>
+      <a href="https://www.youtube.com/@JaredOwen" class="yt-btn" aria-label="Visit Jared on YouTube">
+        <img src="assets/youtube-logo.png" alt="YouTube" />
+      </a>
     </nav>
   </header>
 
-  <main class="page-content">
-    <section class="section">
-      <h1>PATREON</h1>
-      <p>Want to support these videos? Learn more about the different membership tiers and the bonuses you'll receive such as early access, behind the scenes, and high resolution artwork.</p>
-      <a class="button button--primary" href="https://www.patreon.com/jaredowenanimations/membership" target="_blank" rel="noreferrer">Become a Patron</a>
-    </section>
+  <section class="page-head">
+    <div class="page-head-inner">
+      <div class="crumb">Support</div>
+      <h1>Support the channel</h1>
+      <p class="subhead">Patreon membership, one-time PayPal donations, and other ways to help keep the animations coming.</p>
+    </div>
+  </section>
 
-    <section class="section section--supporters">
-      <h2>Patreon Supporters</h2>
-      <p><em>($25+/month Tier* shown with permission)</em></p>
-      <div class="supporter-grid">
-        <span>Jack and Gramps</span>
-        <span>Filippo Salviati</span>
-        <span>John Zelinka</span>
-        <span>Bradley Rhoton</span>
-        <span>Jeremy Mattern</span>
-        <span>Jacob Chow</span>
-        <span>Rodolfo</span>
-        <span>Beau and Kai</span>
-        <span>Henry and Emmy</span>
+  <section class="patreon-section">
+    <div class="patreon-card">
+      <div>
+        <div class="label">Patreon</div>
+        <h2>Become a patron and unlock the perks</h2>
+        <p>Want to support these videos? Different membership tiers come with bonuses like early access, behind-the-scenes content, and high-resolution artwork.</p>
       </div>
-    </section>
+      <a class="btn-patreon" href="https://www.patreon.com/jaredowenanimations/membership" target="_blank" rel="noreferrer">Become a Patron →</a>
+    </div>
+  </section>
 
-    <section class="section">
+  <section class="supporters">
+    <h2>Patreon supporters</h2>
+    <p class="note">$25+/month tier — shown with permission.</p>
+    <div class="supporter-grid">
+      <span>Jack and Gramps</span>
+      <span>Filippo Salviati</span>
+      <span>John Zelinka</span>
+      <span>Bradley Rhoton</span>
+      <span>Jeremy Mattern</span>
+      <span>Jacob Chow</span>
+      <span>Rodolfo</span>
+      <span>Beau and Kai</span>
+      <span>Henry and Emmy</span>
+    </div>
+  </section>
+
+  <section class="other-ways">
+    <div class="other-inner">
       <h2>Other ways to support</h2>
-      <p>More ways you can support these videos are to watch and share them with your friends and family... and do the whole YouTube thing -- Like, Subscribe and click that bell!</p>
-      <p>If you're interested in a one-time donation, you can always donate to PayPal by clicking the button below.</p>
-      <a class="button button--secondary" href="https://www.paypal.com/paypalme/jaredowenanimations" target="_blank" rel="noreferrer">Donate with PayPal</a>
-    </section>
-  </main>
+      <p class="lead">Money is one option. Sharing the videos and engaging with the channel helps just as much.</p>
+      <div class="other-grid">
+        <div class="other-card">
+          <h3>One-time PayPal donation</h3>
+          <p>If a recurring membership isn't for you, a one-time donation through PayPal is just as appreciated.</p>
+          <a class="btn-paypal" href="https://www.paypal.com/paypalme/jaredowenanimations" target="_blank" rel="noreferrer">Donate with PayPal</a>
+        </div>
+        <div class="other-card">
+          <h3>Watch, share, subscribe</h3>
+          <p>Watch the videos. Share them with friends and family. Hit Like, Subscribe, and click that bell — it really does help.</p>
+          <a class="btn-yt" href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">Open the channel →</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <footer class="site-footer">
-    <p>© 2025 Jared Owen Animations. All Rights Reserved.</p>
-  </footer>
-  <script src="scripts.js"></script>
+  <footer>© 2026 Jared Owen Animations</footer>
 </body>
 </html>

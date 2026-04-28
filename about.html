@@ -4,55 +4,238 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About | Jared Owen Animations</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="About Jared Owen — software engineer turned 3D animator, creating Blender animations that explain how things work." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #ffffff;
+      --surface: #f7fbff;
+      --ink: #0e1e3f;
+      --ink-soft: #4b587a;
+      --line: #e6ebf2;
+      --accent: #2758c4;
+      --accent-hover: #1d4aa8;
+      --accent-soft: #eaf0fc;
+      --shadow-sm: 0 6px 20px rgba(14, 30, 63, 0.08);
+      --shadow-md: 0 24px 60px rgba(14, 30, 63, 0.18);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Inter Tight', system-ui, sans-serif;
+      background: var(--paper); color: var(--ink);
+      line-height: 1.55; -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Topbar (identical to homepage) */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 2.5rem;
+      background: var(--ink);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em;
+      color: white;
+    }
+    .brand img { height: 2.4rem; width: auto; }
+    .nav { display: flex; gap: 0.3rem; align-items: center; }
+    .nav a {
+      padding: 0.55rem 0.95rem; font-weight: 500; font-size: 0.94rem;
+      color: white; border-radius: 999px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav a:hover { color: white; background: #1f3463; }
+    .nav a.active { background: #1f3463; }
+    .nav .yt-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; padding: 0.35rem 0.5rem; margin-left: 0.7rem;
+      border-radius: 8px;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .nav .yt-btn img { height: 1.5rem; width: auto; display: block; }
+    .nav .yt-btn:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-1px); }
+
+    /* Page header band */
+    .page-head {
+      background: var(--ink); color: white;
+      padding: 4rem 2.5rem 4.5rem;
+      border-bottom: 4px solid var(--accent);
+    }
+    .page-head-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .page-head .crumb {
+      letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.78rem;
+      font-weight: 700; color: #8fb6ff; margin-bottom: 1rem;
+    }
+    .page-head h1 {
+      font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1;
+      font-weight: 800; letter-spacing: -0.03em; margin: 0;
+    }
+    .page-head .subhead {
+      margin-top: 1rem; font-size: 1.15rem; color: rgba(255, 255, 255, 0.85);
+      max-width: 36rem;
+    }
+
+    /* About content */
+    .about {
+      max-width: 1100px; margin: 0 auto; padding: 4.5rem 2.5rem;
+      display: grid; grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 3.5rem; align-items: start;
+    }
+    .about-text p {
+      font-size: 1.08rem; color: var(--ink); margin: 0 0 1.3rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-text a {
+      color: var(--accent); font-weight: 600;
+      border-bottom: 1px solid var(--accent-soft);
+      transition: border-color 0.15s;
+    }
+    .about-text a:hover { border-bottom-color: var(--accent); }
+    .about-image {
+      position: sticky; top: calc(80px + 1rem);
+    }
+    .about-image img {
+      width: 100%; border-radius: 1.2rem;
+      box-shadow: var(--shadow-md);
+    }
+    .about-image .caption {
+      margin-top: 0.85rem; font-size: 0.9rem; color: var(--ink-soft);
+      letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+    }
+
+    /* Press mentions */
+    .press {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 4rem 2.5rem;
+    }
+    .press-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .press h2 {
+      font-size: clamp(1.7rem, 2.8vw, 2.2rem); font-weight: 700;
+      letter-spacing: -0.02em; margin: 0 0 0.5rem;
+    }
+    .press .lead {
+      color: var(--ink-soft); margin: 0 0 2.2rem; font-size: 1.05rem;
+    }
+    .press-list {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .press-item {
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 1rem; padding: 1.4rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.35rem;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .press-item:hover {
+      border-color: var(--accent); transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .press-item .source {
+      font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 700; color: var(--accent);
+    }
+    .press-item .title {
+      font-size: 1.05rem; font-weight: 600; color: var(--ink); line-height: 1.35;
+    }
+    .press-item .arrow {
+      color: var(--accent); font-weight: 700; margin-top: 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      padding: 2.5rem 2.5rem; text-align: center;
+      color: var(--ink-soft); font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    @media (max-width: 900px) {
+      .topbar { padding: 0.9rem 1.2rem; }
+      .nav a:not(.yt-btn) { display: none; }
+      .page-head { padding: 2.8rem 1.4rem 3rem; }
+      .about {
+        grid-template-columns: 1fr; padding: 2.8rem 1.4rem;
+        gap: 2.2rem;
+      }
+      .about-image { position: static; max-width: 320px; margin: 0 auto; }
+      .press { padding: 3rem 1.4rem; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-brand">
-      <a href="index.html">Jared Owen Animations</a>
-    </div>
-    <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav id="site-nav" class="site-nav" aria-label="Main site navigation">
+  <header class="topbar">
+    <a href="index.html" class="brand" aria-label="Jared Owen Animations — home">
+      <img src="assets/logo.png" alt="Jared Owen Animations" />
+    </a>
+    <nav class="nav">
       <a href="index.html">Welcome</a>
       <a href="about.html" class="active">About</a>
       <a href="learn-blender.html">Learn Blender</a>
       <a href="support.html">Support</a>
-      <a class="button button--ghost" href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">YouTube</a>
+      <a href="https://www.youtube.com/@JaredOwen" class="yt-btn" aria-label="Visit Jared on YouTube">
+        <img src="assets/youtube-logo.png" alt="YouTube" />
+      </a>
     </nav>
   </header>
 
-  <main class="page-content">
-    <section class="section">
-      <h1>About Jared Owen</h1>
+  <section class="page-head">
+    <div class="page-head-inner">
+      <div class="crumb">About</div>
+      <h1>Jared Owen, 3D Animator</h1>
+      <p class="subhead">Software-engineer-turned-animator using Blender to make complex things make sense.</p>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="about-text">
       <p>My name is Jared and I'm an animator from the United States. I have a Bachelor's degree in Computer Science, and I worked as a software engineer for about five years. Initially, 3D animation was a hobby for me, but I became increasingly obsessed with it. Thanks to YouTube, I have been able to turn this into a full time job.</p>
-      <p>I use a program called <a href="http://blender.org" target="_blank" rel="noreferrer">Blender</a> to create 3D animations that explain how things work. I still get to use my programming skills to help me with animating.</p>
-      <p>I love learning how things work, and the videos you see on my <a href="http://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">YouTube channel</a> are the topics that I find really fascinating! I specialize in animating objects, buildings, vehicles, and space exploration. I have a long list of ideas for future videos and I hope to keep creating for years to come.</p>
+      <p>I use a program called <a href="https://www.blender.org/" target="_blank" rel="noreferrer">Blender</a> to create 3D animations that explain how things work. I still get to use my programming skills to help me with animating.</p>
+      <p>I love learning how things work, and the videos you see on my <a href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">YouTube channel</a> are the topics that I find really fascinating! I specialize in animating objects, buildings, vehicles, and space exploration. I have a long list of ideas for future videos and I hope to keep creating for years to come.</p>
       <p>When I'm not animating, I enjoy traveling, biking, reading, crocheting, learning, and spending time with my wife and kids.</p>
-    </section>
+    </div>
+    <figure class="about-image">
+      <img src="assets/jared-headshot.jpg" alt="Jared Owen" />
+      <figcaption class="caption">Jared Owen</figcaption>
+    </figure>
+  </section>
 
-    <section class="section section--split">
-      <article>
-        <h2>Learn more about me</h2>
-        <ul>
-          <li>Blender Nation - <a href="https://www.blendernation.com/2018/11/19/meet-the-artist-jared-owen/" target="_blank" rel="noreferrer">"Meet the Artist Jared Owen"</a></li>
-          <li>DevCon - <a href="https://www.youtube.com/watch?v=VvQUGQVwrWE" target="_blank" rel="noreferrer">"Becoming a Youtuber with 3D Animation"</a></li>
-          <li>Hackaday - <a href="https://hackaday.com/2019/09/27/awesome-animation-channel-is-an-educational-rabbit-hole" target="_blank" rel="noreferrer">"Awesome Animation Channel is an Educational Rabbit Hole"</a></li>
-        </ul>
-      </article>
-      <article>
-        <h2>Featured videos</h2>
-        <p>Check out these videos from the channel and learn more about Jared’s animation process.</p>
-        <ul>
-          <li><a href="https://www.youtube.com/watch?v=VvQUGQVwrWE" target="_blank" rel="noreferrer">How does a Space Telescope Work? Hubble and Webb</a></li>
-          <li><a href="https://www.youtube.com/@JaredOwen" target="_blank" rel="noreferrer">What's inside Tower Bridge? London, England</a></li>
-        </ul>
-      </article>
-    </section>
-  </main>
+  <section class="press">
+    <div class="press-inner">
+      <h2>Learn more about Jared</h2>
+      <p class="lead">Press, interviews, and conference talks featuring the channel.</p>
+      <div class="press-list">
+        <a class="press-item" href="https://www.blendernation.com/2018/11/19/meet-the-artist-jared-owen/" target="_blank" rel="noreferrer">
+          <div class="source">Blender Nation</div>
+          <div class="title">"Meet the Artist Jared Owen"</div>
+          <div class="arrow">Read article →</div>
+        </a>
+        <a class="press-item" href="https://www.youtube.com/watch?v=VvQUGQVwrWE" target="_blank" rel="noreferrer">
+          <div class="source">DevCon Talk</div>
+          <div class="title">"Becoming a YouTuber with 3D Animation"</div>
+          <div class="arrow">Watch talk →</div>
+        </a>
+        <a class="press-item" href="https://hackaday.com/2019/09/27/awesome-animation-channel-is-an-educational-rabbit-hole" target="_blank" rel="noreferrer">
+          <div class="source">Hackaday</div>
+          <div class="title">"Awesome Animation Channel is an Educational Rabbit Hole"</div>
+          <div class="arrow">Read article →</div>
+        </a>
+      </div>
+    </div>
+  </section>
 
-  <footer class="site-footer">
-    <p>© 2025 Jared Owen Animations. All Rights Reserved.</p>
-  </footer>
-  <script src="scripts.js"></script>
+  <footer>© 2026 Jared Owen Animations</footer>
 </body>
 </html>
