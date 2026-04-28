@@ -260,10 +260,10 @@
 
   <div class="stats">
     <div class="stats-inner">
-      <div class="stat"><div class="num"><span class="accent">1.4</span>M</div><div class="label">YouTube subscribers</div></div>
-      <div class="stat"><div class="num"><span class="accent">200</span>M+</div><div class="label">Total views</div></div>
-      <div class="stat"><div class="num"><span class="accent">80</span>+</div><div class="label">Animations</div></div>
-      <div class="stat"><div class="num"><span class="accent">8</span>yrs</div><div class="label">Of Blender work</div></div>
+      <div class="stat"><div class="num" data-stat="subscribers"><span class="accent">1.4</span>M</div><div class="label">YouTube subscribers</div></div>
+      <div class="stat"><div class="num" data-stat="views"><span class="accent">200</span>M+</div><div class="label">Total views</div></div>
+      <div class="stat"><div class="num" data-stat="videos"><span class="accent">80</span>+</div><div class="label">Animations</div></div>
+      <div class="stat"><div class="num" data-stat="years"><span class="accent">8</span>yrs</div><div class="label">Of Blender work</div></div>
     </div>
   </div>
 
@@ -312,6 +312,41 @@
       v.addEventListener('error', () => console.error('video failed to load. Source path:', v.currentSrc || v.querySelector('source')?.src, v.error));
       document.addEventListener('click', tryPlay, { once: true });
     });
+
+    // Live stats: fetch stats.json (committed by the update-stats GitHub Action every 6h)
+    // and replace the hardcoded HTML fallback. If fetch fails, the fallback values stay.
+    (function loadStats() {
+      // YouTube floors subs/views: 1,499,999 displays as 1.4M, not 1.5M.
+      function formatBig(n) {
+        if (n >= 1e9)  return [String(Math.floor(n / 1e8) / 10),  'B'];
+        if (n >= 1e7)  return [String(Math.floor(n / 1e6)),       'M'];
+        if (n >= 1e6)  return [String(Math.floor(n / 1e5) / 10),  'M'];
+        if (n >= 1e4)  return [String(Math.floor(n / 1e3)),       'K'];
+        if (n >= 1e3)  return [String(Math.floor(n / 100)  / 10), 'K'];
+        return [String(n), ''];
+      }
+
+      function render(data) {
+        const years = Math.max(1, Math.floor((Date.now() - new Date(data.channelStartedAt)) / 31557600000));
+        const slots = {
+          subscribers: () => { const [v, s] = formatBig(data.subscribers); return [v, s]; },
+          views:       () => { const [v, s] = formatBig(data.views);       return [v, s + '+']; },
+          videos:      () => [String(data.videos), '+'],
+          years:       () => [String(years), 'yrs'],
+        };
+        document.querySelectorAll('[data-stat]').forEach(el => {
+          const make = slots[el.dataset.stat];
+          if (!make) return;
+          const [value, suffix] = make();
+          el.innerHTML = '<span class="accent">' + value + '</span>' + suffix;
+        });
+      }
+
+      fetch('stats.json?_=' + Date.now())
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(render)
+        .catch(err => console.warn('stats.json unavailable, using hardcoded fallback:', err));
+    })();
   </script>
 </body>
 </html>
