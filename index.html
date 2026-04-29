@@ -73,10 +73,11 @@
       width: 100%; height: 100%; object-fit: cover;
     }
     /* Subtle bottom vignette so white text stays readable.
-       Top half of the video is fully visible; only the lower band darkens slightly. */
+       Top 60% of the video is fully unobscured; only a narrow band behind
+       the headline darkens, and only to 40% navy. */
     .hero::after {
       content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(180deg, transparent 35%, rgba(10, 22, 50, 0.55) 100%);
+      background: linear-gradient(180deg, transparent 60%, rgba(10, 22, 50, 0.40) 100%);
     }
 
     .hero-content-wrap {
