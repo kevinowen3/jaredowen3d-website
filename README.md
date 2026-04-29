@@ -21,7 +21,6 @@ Each page is self-contained: HTML + inline `<style>` + inline `<script>`. No bui
 
 ## Possible next steps
 
-- Auto-pull the latest YouTube videos into the homepage rail via a scheduled GitHub Action (no exposed API keys, fully static).
 - Hook up a contact form via [Formspree](https://formspree.io/) for press / sponsor inquiries.
 - Add a newsletter signup (Buttondown, ConvertKit) when there's an audience to send to.
 - Re-encode `assets/hero-loop.mp4` (~13 MB → ~3 MB) to reduce bandwidth before launch.

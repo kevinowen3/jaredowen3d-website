@@ -270,7 +270,7 @@
   <section class="rail-section">
     <div class="rail-head">
       <h2>Latest from the channel</h2>
-      <div class="meta">Auto-updated weekly from YouTube →</div>
+      <div class="meta">Auto-updated daily from YouTube →</div>
     </div>
     <div class="rail">
       <a class="v-card" href="https://www.youtube.com/watch?v=VvQUGQVwrWE"
@@ -346,6 +346,40 @@
         .then(r => r.ok ? r.json() : Promise.reject(r.status))
         .then(render)
         .catch(err => console.warn('stats.json unavailable, using hardcoded fallback:', err));
+    })();
+
+    // Latest videos: fetch videos.json (committed by the update-videos GitHub Action daily)
+    // and replace the hardcoded rail. If fetch fails, the fallback markup stays.
+    (function loadVideos() {
+      function escapeHtml(s) {
+        return String(s).replaceAll(/[&<>"']/g, c => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+      }
+      // YouTube IDs are 11 chars of [A-Za-z0-9_-]. Reject anything else before
+      // dropping it into URLs / background-image to neutralise injection risk.
+      function isValidId(s) { return typeof s === 'string' && /^[\w-]{11}$/.test(s); }
+
+      function render(data) {
+        const videos = (data.videos || []).filter(v => isValidId(v.id)).slice(0, 3);
+        if (!videos.length) return;
+        const rail = document.querySelector('.rail');
+        if (!rail) return;
+        rail.innerHTML = videos.map(v => `
+          <a class="v-card" href="https://www.youtube.com/watch?v=${v.id}"
+             style="background-image:url('https://img.youtube.com/vi/${v.id}/maxresdefault.jpg');">
+            <div class="play">▶</div>
+            <div class="info">
+              <h3>${escapeHtml(v.title)}</h3>
+            </div>
+          </a>
+        `).join('');
+      }
+
+      fetch('videos.json?_=' + Date.now())
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(render)
+        .catch(err => console.warn('videos.json unavailable, using hardcoded fallback:', err));
     })();
   </script>
 </body>

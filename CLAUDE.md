@@ -108,7 +108,6 @@ In rough priority order — none of these are blocking the current state of the 
 
 - [ ] **Replace placeholder stats** on `index.html` (subscribers / views / video count / years) with Jared's real numbers.
 - [ ] **Re-encode `hero-loop.mp4`** from ~13 MB → ~3–4 MB before launch. Bandwidth concern on free hosting tiers if a video goes viral.
-- [ ] **Auto-pull latest YouTube videos** into the homepage rail via a scheduled GitHub Action: fetch RSS at `https://www.youtube.com/feeds/videos.xml?channel_id=...`, write `videos.json` to the repo, page reads it client-side. Keeps the site fully static, no exposed API keys.
 - [ ] **Contact form** via [Formspree](https://formspree.io/) — useful for press/sponsor inquiries. Free tier: 50 submissions/month.
 - [ ] **Get a white-text version of the channel logo** from Jared. The current `logo.png` has a dark "Animations" subtitle that reads poorly on the navy banner.
 - [ ] **Newsletter signup** (deferred — Buttondown or ConvertKit when there's an audience to send to).
