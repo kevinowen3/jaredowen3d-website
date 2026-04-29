@@ -195,6 +195,13 @@
       line-height: 1.25;
       text-shadow: 0 2px 12px rgba(0,0,0,0.5);
     }
+    .v-card .info .released {
+      margin-top: 0.4rem;
+      font-size: 0.78rem; font-weight: 500;
+      color: rgba(255, 255, 255, 0.78);
+      letter-spacing: 0.03em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
     .v-card .play {
       position: absolute; top: 1rem; right: 1rem; z-index: 2;
       width: 42px; height: 42px; border-radius: 50%;
@@ -273,28 +280,28 @@
       <div class="meta">Auto-updated daily from YouTube →</div>
     </div>
     <div class="rail">
-      <a class="v-card" href="https://www.youtube.com/watch?v=VvQUGQVwrWE"
-         style="background-image:url('https://img.youtube.com/vi/VvQUGQVwrWE/maxresdefault.jpg');">
+      <a class="v-card" href="https://www.youtube.com/watch?v=u2qs-l0vgGw"
+         style="background-image:url('https://img.youtube.com/vi/u2qs-l0vgGw/maxresdefault.jpg');">
         <div class="play">▶</div>
         <div class="info">
-          <span class="tag">Space</span>
-          <h3>How does a Space Telescope Work?</h3>
+          <h3>How did the Lunar Roving Vehicle work? (NASA)</h3>
+          <div class="released">Released Dec 26, 2025</div>
         </div>
       </a>
-      <a class="v-card" href="https://www.youtube.com/watch?v=G2e4K-wD1KY"
-         style="background-image:url('https://img.youtube.com/vi/G2e4K-wD1KY/maxresdefault.jpg');">
+      <a class="v-card" href="https://www.youtube.com/watch?v=VRpHuznm0j0"
+         style="background-image:url('https://img.youtube.com/vi/VRpHuznm0j0/maxresdefault.jpg');">
         <div class="play">▶</div>
         <div class="info">
-          <span class="tag">Engineering</span>
-          <h3>What's inside Tower Bridge?</h3>
+          <h3>How does a Spacesuit work? (NASA)</h3>
+          <div class="released">Released Oct 31, 2025</div>
         </div>
       </a>
-      <a class="v-card" href="https://www.youtube.com/@JaredOwen"
-         style="background-image:url('https://img.youtube.com/vi/VvQUGQVwrWE/maxresdefault.jpg');">
+      <a class="v-card" href="https://www.youtube.com/watch?v=jvhdNuiyNOI"
+         style="background-image:url('https://img.youtube.com/vi/jvhdNuiyNOI/maxresdefault.jpg');">
         <div class="play">▶</div>
         <div class="info">
-          <span class="tag">Channel</span>
-          <h3>Browse 80+ animations</h3>
+          <h3>Building the Space Station Truss (and the Solar Panel Tear)</h3>
+          <div class="released">Released Aug 29, 2025</div>
         </div>
       </a>
     </div>
@@ -360,20 +367,30 @@
       // dropping it into URLs / background-image to neutralise injection risk.
       function isValidId(s) { return typeof s === 'string' && /^[\w-]{11}$/.test(s); }
 
+      function formatReleased(iso) {
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return '';
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
       function render(data) {
         const videos = (data.videos || []).filter(v => isValidId(v.id)).slice(0, 3);
         if (!videos.length) return;
         const rail = document.querySelector('.rail');
         if (!rail) return;
-        rail.innerHTML = videos.map(v => `
-          <a class="v-card" href="https://www.youtube.com/watch?v=${v.id}"
-             style="background-image:url('https://img.youtube.com/vi/${v.id}/maxresdefault.jpg');">
-            <div class="play">▶</div>
-            <div class="info">
-              <h3>${escapeHtml(v.title)}</h3>
-            </div>
-          </a>
-        `).join('');
+        rail.innerHTML = videos.map(v => {
+          const released = formatReleased(v.publishedAt);
+          return `
+            <a class="v-card" href="https://www.youtube.com/watch?v=${v.id}"
+               style="background-image:url('https://img.youtube.com/vi/${v.id}/maxresdefault.jpg');">
+              <div class="play">▶</div>
+              <div class="info">
+                <h3>${escapeHtml(v.title)}</h3>
+                ${released ? `<div class="released">Released ${escapeHtml(released)}</div>` : ''}
+              </div>
+            </a>
+          `;
+        }).join('');
       }
 
       fetch('videos.json?_=' + Date.now())
