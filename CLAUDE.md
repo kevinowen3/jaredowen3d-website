@@ -24,7 +24,7 @@ Plain static site. **No build step**, no framework, no package manager.
 │   ├── logo.png            Channel wordmark (teal "JaredOwen Animations") — used by all 4 pages
 │   ├── youtube-logo.png    YouTube wordmark — used as nav button on all 4 pages
 │   ├── jared-headshot.jpg  Used on about.html
-│   ├── hero-loop.mp4       1080p H.264, ~13 MB, 30s — homepage hero
+│   ├── hero-loop.mp4       720p H.264, ~3.5 MB, 30s — homepage hero (two-pass, 950 kbps)
 │   ├── hero-poster.jpg     Poster fallback for the hero video
 │   ├── hero-captions.vtt   Empty WebVTT — satisfies a11y linter for muted decorative video
 │   └── hero-descriptions.vtt   Empty WebVTT — same reason
@@ -106,8 +106,6 @@ DNS propagation takes up to 24 hours.
 
 In rough priority order — none of these are blocking the current state of the site.
 
-- [ ] **Replace placeholder stats** on `index.html` (subscribers / views / video count / years) with Jared's real numbers.
-- [ ] **Re-encode `hero-loop.mp4`** from ~13 MB → ~3–4 MB before launch. Bandwidth concern on free hosting tiers if a video goes viral.
 - [ ] **Contact form** via [Formspree](https://formspree.io/) — useful for press/sponsor inquiries. Free tier: 50 submissions/month.
 - [ ] **Get a white-text version of the channel logo** from Jared. The current `logo.png` has a dark "Animations" subtitle that reads poorly on the navy banner.
 - [ ] **Newsletter signup** (deferred — Buttondown or ConvertKit when there's an audience to send to).
@@ -123,3 +121,4 @@ In rough priority order — none of these are blocking the current state of the 
 - **Logo treatment** decided: native colors on navy banner (not white-filtered), matching the Wix site's approach.
 - **Promoted from `mockups/` to root** as the real `index.html`/`about.html` once direction was firm; original prototype `learn-blender.html` and `support.html` rebuilt in the same B2 style.
 - **Cleanup pass**: removed `mockups/`, `styles.css`, `scripts.js`, 6 social-icon PNGs, 2 PayPal logos. All recoverable from initial commit `6587809` if needed.
+- **2026-04-29** — **Hero video re-encoded**: 1080p / 13.7 MB → 720p / 3.6 MB (74% smaller). Two-pass H.264 at 950 kbps target, lanczos downscale, faststart. Original recoverable from git history.
