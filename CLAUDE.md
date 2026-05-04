@@ -18,7 +18,7 @@ Plain static site. **No build step**, no framework, no package manager.
 .
 ├── index.html              Welcome — full-bleed hero video, stats, latest videos rail
 ├── about.html              About — bio, headshot, press mentions
-├── learn-blender.html      Learn Blender — resource cards + numbered starting paths
+├── learn-blender.html      Learn Blender — resource cards + "other YouTube channels" grid
 ├── support.html            Support — Patreon CTA, supporter list, PayPal + YouTube CTAs
 ├── assets/
 │   ├── logo.png            Channel wordmark (teal "JaredOwen Animations") — used by all 4 pages
@@ -65,10 +65,12 @@ Brand-specific accent colors (only on support.html):
 ### Topbar (all four pages)
 
 - Navy `--ink` background, white text, sticky
-- Logo at `2.4rem` height, native colors (NOT filtered to white) — matches Wix
+- Layout is a **3-column grid** (`1fr auto 1fr`) so the nav sits truly centered between the logo (left) and the YouTube button (right) — replicates the Wix homepage header
+- Logo at `3.5rem` height (`2.6rem` on mobile), native colors (NOT filtered to white) — matches Wix
+- YouTube button is a sibling of `<nav>`, not inside it — needed so it can occupy its own grid column. CSS selector is `.yt-btn`, not `.nav .yt-btn`
 - Right-side YouTube button is the **YouTube wordmark image** in a transparent pill (hover gives a subtle white tint backdrop)
 - Active page highlighted with `background: #1f3463;` via `.active` class
-- Mobile (`max-width: 900px`): nav links hide; only the YouTube button remains
+- Mobile (`max-width: 900px`): `.nav { display: none; }` hides the link row entirely; brand + YouTube button remain
 
 ### Inner pages (about / learn-blender / support)
 
@@ -94,9 +96,11 @@ Avoid Python's `http.server` for video work — its HTTP Range request support i
 
 **GitHub Pages**, on the existing custom domain `jaredowen3d.com`.
 
+Currently live (preview) at **https://kevinowen3.github.io/jaredowen3d-website/** — DNS still points at Wix, so the public `jaredowen3d.com` URL is unchanged. Repo: https://github.com/kevinowen3/jaredowen3d-website.
+
 Cutover plan when ready:
-1. Push this repo to GitHub (public).
-2. Settings → Pages → deploy from `main`, root folder.
+1. ~~Push this repo to GitHub (public).~~ Done.
+2. ~~Settings → Pages → deploy from `main`, root folder.~~ Done (enabled via API on 2026-05-04).
 3. Add `jaredowen3d.com` as the custom domain in Pages settings.
 4. Update DNS at the registrar (currently pointing at Wix) to GitHub Pages' IPs / CNAME.
 
@@ -122,3 +126,6 @@ In rough priority order — none of these are blocking the current state of the 
 - **Promoted from `mockups/` to root** as the real `index.html`/`about.html` once direction was firm; original prototype `learn-blender.html` and `support.html` rebuilt in the same B2 style.
 - **Cleanup pass**: removed `mockups/`, `styles.css`, `scripts.js`, 6 social-icon PNGs, 2 PayPal logos. All recoverable from initial commit `6587809` if needed.
 - **2026-04-29** — **Hero video re-encoded**: 1080p / 13.7 MB → 720p / 3.6 MB (74% smaller). Two-pass H.264 at 950 kbps target, lanczos downscale, faststart. Original recoverable from git history.
+- **2026-05-04** — **GitHub Pages enabled** for preview at `kevinowen3.github.io/jaredowen3d-website/`. No DNS change — custom domain field intentionally left blank so Wix keeps serving `jaredowen3d.com` until cutover.
+- **2026-05-04** — **Topbar redesigned** to match the Wix homepage header: switched from flex `space-between` to a `1fr auto 1fr` grid so the nav is truly centered, bumped the logo from 2.4rem to 3.5rem, pulled the YouTube button out of `<nav>` so it can live in its own grid column.
+- **2026-05-04** — **Learn Blender refresh**: removed the numbered "Recommended starting paths" section (was just restating the four resource cards). Added an "Other YouTube channels I really like" section replicated from Wix — six creators (Blender, Grant Abbitt, Josh Gambrell, Erindale, Curtis Holt, Polyfjord) presented as cards reusing the `.resource-card` pattern with a monospace `@handle` in place of the platform logo. Affiliate disclaimer moved to sit under the resource grid.
