@@ -153,48 +153,6 @@
       color: var(--accent); font-weight: 700; font-size: 0.92rem;
     }
 
-    /* Recommended paths */
-    .paths {
-      background: var(--surface);
-      border-top: 1px solid var(--line);
-      padding: 4rem 2.5rem;
-    }
-    .paths-inner { max-width: 900px; margin: 0 auto; }
-    .paths h2 {
-      font-size: clamp(1.7rem, 2.8vw, 2.2rem); font-weight: 700;
-      letter-spacing: -0.02em; margin: 0 0 1.4rem;
-    }
-    .paths ol {
-      list-style: none; padding: 0; margin: 0;
-      counter-reset: path;
-    }
-    .paths ol li {
-      counter-increment: path;
-      padding: 1.1rem 0 1.1rem 3.2rem;
-      border-bottom: 1px solid var(--line);
-      position: relative;
-      font-size: 1.05rem; color: var(--ink);
-    }
-    .paths ol li:last-child { border-bottom: none; }
-    .paths ol li::before {
-      content: counter(path);
-      position: absolute; left: 0; top: 1.05rem;
-      width: 2.2rem; height: 2.2rem; border-radius: 50%;
-      background: var(--accent); color: white;
-      display: grid; place-items: center;
-      font-weight: 700; font-size: 0.9rem;
-    }
-    .paths code {
-      background: var(--accent-soft); color: var(--accent);
-      padding: 0.1rem 0.45rem; border-radius: 0.3rem;
-      font-family: ui-monospace, 'SF Mono', Consolas, monospace;
-      font-size: 0.92em; font-weight: 600;
-    }
-    .paths .disclaimer {
-      margin-top: 1.8rem; font-size: 0.9rem; color: var(--ink-soft);
-      font-style: italic;
-    }
-
     /* YouTube channels */
     .channels {
       max-width: 1100px; margin: 0 auto; padding: 4rem 2.5rem 4rem;
@@ -227,7 +185,6 @@
       .page-head-badge { width: 96px; }
       .intro { padding: 2.8rem 1.4rem 1rem; }
       .resources { padding: 1rem 1.4rem 2.8rem; }
-      .paths { padding: 2.8rem 1.4rem; }
       .channels { padding: 2.8rem 1.4rem; }
     }
   </style>
@@ -297,19 +254,6 @@
         <p>Cinematic lighting, procedural texturing, and hard-surface modeling for when you're ready to push beyond beginner.</p>
         <div class="arrow">Visit site →</div>
       </a>
-    </div>
-  </section>
-
-  <section class="paths">
-    <div class="paths-inner">
-      <h2>Recommended starting paths</h2>
-      <ol>
-        <li>Start with the Blender Beginner Donut Series from <strong>Blender Guru</strong>.</li>
-        <li>Use <strong>CG Boost</strong>'s free Blender beginners course, then expand into sculpting, Grease Pencil, or environment work.</li>
-        <li>Check out <strong>CG Cookie</strong> for more structured Blender training — use code <code>jaredowen</code> for 10% off an annual membership.</li>
-        <li>Visit <strong>Creative Shrimp</strong> for cinematic lighting, procedural texturing, and hard-surface rigging resources.</li>
-      </ol>
-      <p class="disclaimer">Some of the links above are affiliate links.</p>
     </div>
   </section>
 
