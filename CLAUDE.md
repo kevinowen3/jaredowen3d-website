@@ -28,6 +28,15 @@ Plain static site. **No build step**, no framework, no package manager.
 │   ├── hero-poster.jpg     Poster fallback for the hero video
 │   ├── hero-captions.vtt   Empty WebVTT — satisfies a11y linter for muted decorative video
 │   └── hero-descriptions.vtt   Empty WebVTT — same reason
+├── stats.json              Live YouTube channel stats — written by the update-stats Action
+├── videos.json             Latest 3 long-form videos — written by the update-videos Action
+├── .github/
+│   ├── workflows/
+│   │   ├── update-stats.yml    Cron every 6h at :17 — refreshes stats.json
+│   │   └── update-videos.yml   Cron daily at 04:23 UTC — refreshes videos.json
+│   └── scripts/
+│       ├── fetch-stats.mjs     YouTube Data API channels.list → stats.json
+│       └── fetch-videos.mjs    channels → uploads playlist → videos.list (durations) → videos.json, filtering Shorts (≤180s) from a pool of 20
 ├── README.md               User-facing project description + deploy steps
 └── CLAUDE.md               This file
 ```
@@ -70,7 +79,7 @@ Brand-specific accent colors (only on support.html):
 - YouTube button is a sibling of `<nav>`, not inside it — needed so it can occupy its own grid column. CSS selector is `.yt-btn`, not `.nav .yt-btn`
 - Right-side YouTube button is the **YouTube wordmark image** in a transparent pill (hover gives a subtle white tint backdrop)
 - Active page highlighted with `background: #1f3463;` via `.active` class
-- Mobile (`max-width: 900px`): `.nav { display: none; }` hides the link row entirely; brand + YouTube button remain
+- Mobile (`max-width: 900px`): the desktop `.nav` link row is hidden and a hamburger button (`.menu-btn`) appears next to the YouTube button. Tapping it toggles `.is-open` on the topbar, which reveals `.mobile-nav` (a dropdown panel below the row, also rendered into the same `<header class="topbar">`) and animates the three bars into an X via CSS. A small inline script wires the click handler and Escape-to-close. There are now two `<nav>` landmarks per page (`.nav aria-label="Primary"`, `.mobile-nav aria-label="Site navigation"`) — keep both in sync when adding or renaming links
 
 ### Inner pages (about / learn-blender / support)
 
@@ -84,7 +93,7 @@ Brand-specific accent colors (only on support.html):
 - **No emojis in markup, copy, or commit messages** unless the user explicitly asks.
 - **Hero video must autoplay**: `autoplay muted playsinline loop preload="auto" tabindex="-1" aria-hidden="true"` — plus a small inline JS that calls `.play()` programmatically and falls back to the first user click if autoplay is blocked.
 - **A11y warnings are addressed for real**, not suppressed: e.g. opaque dark hover bgs instead of translucent white tints; real `<track>` elements pointing at empty `.vtt` stub files for decorative video.
-- **Stats in homepage are placeholders** (1.4M subs / 200M views / 80+ animations / 8 yrs). Replace with real numbers before launch.
+- **Homepage stats and latest-videos rail are live**, fetched at page load from `stats.json` and `videos.json`. Both files are committed by scheduled GitHub Actions (`update-stats.yml` every 6h, `update-videos.yml` daily). The hardcoded numbers in `index.html` are fallbacks shown only if the fetch fails — keep them roughly current as a reasonable degraded state. The Shorts filter in `fetch-videos.mjs` keys off a 180s duration cap; that's tied to YouTube's current Shorts limit and would need updating if YouTube changes it.
 
 ## Local development
 
@@ -113,7 +122,7 @@ In rough priority order — none of these are blocking the current state of the 
 - [ ] **Contact form** via [Formspree](https://formspree.io/) — useful for press/sponsor inquiries. Free tier: 50 submissions/month.
 - [ ] **Get a white-text version of the channel logo** from Jared. The current `logo.png` has a dark "Animations" subtitle that reads poorly on the navy banner.
 - [ ] **Newsletter signup** (deferred — Buttondown or ConvertKit when there's an audience to send to).
-- [ ] **Social links footer**? The original Wix site had a "Find Jared online" social row. Icons were removed during cleanup but are recoverable from initial commit `6587809`. Inline SVG icons would be a better long-term choice than PNGs.
+- [ ] ~~**Social links footer**? The original Wix site had a "Find Jared online" social row.~~ Done 2026-05-06 — see decisions log.
 
 ## Brief log of decisions
 
@@ -129,3 +138,7 @@ In rough priority order — none of these are blocking the current state of the 
 - **2026-05-04** — **GitHub Pages enabled** for preview at `kevinowen3.github.io/jaredowen3d-website/`. No DNS change — custom domain field intentionally left blank so Wix keeps serving `jaredowen3d.com` until cutover.
 - **2026-05-04** — **Topbar redesigned** to match the Wix homepage header: switched from flex `space-between` to a `1fr auto 1fr` grid so the nav is truly centered, bumped the logo from 2.4rem to 3.5rem, pulled the YouTube button out of `<nav>` so it can live in its own grid column.
 - **2026-05-04** — **Learn Blender refresh**: removed the numbered "Recommended starting paths" section (was just restating the four resource cards). Added an "Other YouTube channels I really like" section replicated from Wix — six creators (Blender, Grant Abbitt, Josh Gambrell, Erindale, Curtis Holt, Polyfjord) presented as cards reusing the `.resource-card` pattern with a monospace `@handle` in place of the platform logo. Affiliate disclaimer moved to sit under the resource grid.
+- **2026-05-04** — **Homepage stats and latest videos went live** via the YouTube Data API. Two scheduled GitHub Actions (`update-stats.yml` every 6h, `update-videos.yml` daily) fetch from the API, write `stats.json` / `videos.json`, and commit if changed. `index.html` fetches both at load with a cache-busting query string and keeps its hardcoded markup as a fallback if the JSON file is missing or `fetch` fails. The `fetch-videos.mjs` script pulls 20 candidates and filters out anything ≤180s (Shorts) before taking the top 3, since the rail is meant for long-form animations only. API key lives in the repo `YT_API_KEY` secret.
+- **2026-05-06** — **Site footer rebuilt** as a navy "Find Jared online" social bar above a copyright line. Replicates the original Wix site's social row. Six platforms — YouTube, Facebook, Instagram, Patreon, X (Twitter), TikTok — each rendered as an inline SVG icon (Simple Icons paths, public domain) inside an `<a>` with an `aria-label`. Icons inherit `fill: currentColor` so the rest/hover color comes from CSS (white on navy → navy on white pill on hover). Per CLAUDE.md guidance, SVGs are inlined rather than added as PNG assets so there are no new image files. Each `<nav>`/`<footer>` block is duplicated across the four pages in keeping with the "inline CSS/JS per page" convention. Linter caveat: do *not* set a rest-state `background: rgba(255,255,255,0.08)` on `.social-links a` — the contrast checker can't model alpha-stacking against the navy footer and will flag it as white-on-white. Hover bg (white) is fine because the link gets `color: var(--ink)` then.
+- **2026-05-06** — **PayPal mark in the donate button**: first attempt was an inline SVG of the PayPal "PP" monogram. The simple-icons single-path version rendered as a flat blob; splitting into two paths with the back P at lower opacity helped, but still didn't read as the brand. Final approach: dropped the SVG and replaced the button's plain "Donate with PayPal" text with an italic, weight-800 two-tone wordmark — `Pay` in white, `Pal` in `#66c5f0` (PayPal sky cyan, contrast 6.4:1 against the navy `--paypal` button bg). Reads instantly as the PayPal logo lockup, no asset needed. Markup uses two nested spans so the styling is purely a CSS concern.
+- **2026-05-06** — **Mobile navigation** added across all four pages. Previously the desktop nav was just hidden at ≤900px, which left mobile users with no way to reach other pages. Now a hamburger button sits next to the YouTube button on mobile and toggles a dropdown menu (`.mobile-nav`) with all four links. The dropdown is a sibling of the row inside `<header class="topbar">`, so it inherits the sticky positioning naturally. Bars animate to an X via CSS; toggle JS is duplicated inline on each page (about/learn-blender/support gained their first `<script>` block). Also added `aria-label="Primary"` to the desktop navs to satisfy the "two `<nav>` landmarks need distinct labels" a11y rule.
