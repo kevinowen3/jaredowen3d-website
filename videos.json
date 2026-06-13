@@ -1,6 +1,11 @@
 {
   "videos": [
     {
+      "id": "7QsgPiLe_Q0",
+      "title": "How does a Spiral Escalator work?",
+      "publishedAt": "2026-06-12T12:51:08Z"
+    },
+    {
       "id": "u2qs-l0vgGw",
       "title": "How did the Lunar Roving Vehicle work? (NASA)",
       "publishedAt": "2025-12-26T13:29:14Z"
@@ -9,12 +14,7 @@
       "id": "VRpHuznm0j0",
       "title": "How does a Spacesuit work? (NASA)",
       "publishedAt": "2025-10-31T13:04:20Z"
-    },
-    {
-      "id": "jvhdNuiyNOI",
-      "title": "Building the Space Station Truss (and the Solar Panel Tear)",
-      "publishedAt": "2025-08-29T13:15:02Z"
     }
   ],
-  "updatedAt": "2026-06-12T08:43:41.635Z"
+  "updatedAt": "2026-06-13T07:58:35.237Z"
 }
