@@ -30,6 +30,7 @@ Plain static site. **No build step**, no framework, no package manager.
 │   └── hero-descriptions.vtt   Empty WebVTT — same reason
 ├── stats.json              Live YouTube channel stats — written by the update-stats Action
 ├── videos.json             Latest 3 long-form videos — written by the update-videos Action
+├── _headers                Cloudflare Pages headers — X-Robots-Tag: noindex while staging (remove at launch)
 ├── .github/
 │   ├── workflows/
 │   │   ├── update-stats.yml    Cron every 6h at :17 — refreshes stats.json
@@ -101,19 +102,16 @@ The project is served as plain static files. Use **`npx serve .` from the projec
 
 Avoid Python's `http.server` for video work — its HTTP Range request support is unreliable, and browsers refuse to stream MP4 without it.
 
-## Hosting target
+## Hosting
 
-**GitHub Pages**, on the existing custom domain `jaredowen3d.com`.
+Two hosts deploy automatically from `main` (repo: https://github.com/kevinowen3/jaredowen3d-website):
 
-Currently live (preview) at **https://kevinowen3.github.io/jaredowen3d-website/** — DNS still points at Wix, so the public `jaredowen3d.com` URL is unchanged. Repo: https://github.com/kevinowen3/jaredowen3d-website.
+- **Cloudflare Pages** — staging at **jaredowenanimations.com** (domain registered at Zoho, nameservers on Cloudflare, free plan). No build step: framework preset "None", output directory `/`. The `_headers` file sends `X-Robots-Tag: noindex` on the Cloudflare deployment only, keeping the staging site out of search indexes until launch.
+- **GitHub Pages** — preview at **https://kevinowen3.github.io/jaredowen3d-website/** (deploy from `main`, root).
 
-Cutover plan when ready:
-1. ~~Push this repo to GitHub (public).~~ Done.
-2. ~~Settings → Pages → deploy from `main`, root folder.~~ Done (enabled via API on 2026-05-04).
-3. Add `jaredowen3d.com` as the custom domain in Pages settings.
-4. Update DNS at the registrar (currently pointing at Wix) to GitHub Pages' IPs / CNAME.
+**jaredowen3d.com is still the live Wix site** and must stay untouched until final cutover. Its DNS is on Wix nameservers and carries the Zoho MX/SPF/DKIM records for the business email — any future migration of that zone must copy those records exactly or email breaks. jaredowenanimations.com carries no email (verified 2026-08-01: no MX records).
 
-DNS propagation takes up to 24 hours.
+Final cutover (later, when ready): repoint `jaredowen3d.com` (preserving Zoho mail records), remove the `noindex` header, and decide which domain redirects to which.
 
 ## Open todos
 
@@ -141,4 +139,5 @@ In rough priority order — none of these are blocking the current state of the 
 - **2026-05-04** — **Homepage stats and latest videos went live** via the YouTube Data API. Two scheduled GitHub Actions (`update-stats.yml` every 6h, `update-videos.yml` daily) fetch from the API, write `stats.json` / `videos.json`, and commit if changed. `index.html` fetches both at load with a cache-busting query string and keeps its hardcoded markup as a fallback if the JSON file is missing or `fetch` fails. The `fetch-videos.mjs` script pulls 20 candidates and filters out anything ≤180s (Shorts) before taking the top 3, since the rail is meant for long-form animations only. API key lives in the repo `YT_API_KEY` secret.
 - **2026-05-06** — **Site footer rebuilt** as a navy "Find Jared online" social bar above a copyright line. Replicates the original Wix site's social row. Six platforms — YouTube, Facebook, Instagram, Patreon, X (Twitter), TikTok — each rendered as an inline SVG icon (Simple Icons paths, public domain) inside an `<a>` with an `aria-label`. Icons inherit `fill: currentColor` so the rest/hover color comes from CSS (white on navy → navy on white pill on hover). Per CLAUDE.md guidance, SVGs are inlined rather than added as PNG assets so there are no new image files. Each `<nav>`/`<footer>` block is duplicated across the four pages in keeping with the "inline CSS/JS per page" convention. Linter caveat: do *not* set a rest-state `background: rgba(255,255,255,0.08)` on `.social-links a` — the contrast checker can't model alpha-stacking against the navy footer and will flag it as white-on-white. Hover bg (white) is fine because the link gets `color: var(--ink)` then.
 - **2026-05-06** — **PayPal mark in the donate button**: first attempt was an inline SVG of the PayPal "PP" monogram. The simple-icons single-path version rendered as a flat blob; splitting into two paths with the back P at lower opacity helped, but still didn't read as the brand. Final approach: dropped the SVG and replaced the button's plain "Donate with PayPal" text with an italic, weight-800 two-tone wordmark — `Pay` in white, `Pal` in `#66c5f0` (PayPal sky cyan, contrast 6.4:1 against the navy `--paypal` button bg). Reads instantly as the PayPal logo lockup, no asset needed. Markup uses two nested spans so the styling is purely a CSS concern.
+- **2026-08-01** — **Cloudflare Pages staging decided**: the new site will stage at `jaredowenanimations.com` (previously a Zoho-served 301 redirect to jaredowen3d.com) via Cloudflare Pages connected to the GitHub repo, while Wix keeps serving `jaredowen3d.com`. Domain registration stays at Zoho; only its nameservers move to Cloudflare. Verified the domain has no MX records, so the move can't affect email (which lives on jaredowen3d.com's zone). Added `_headers` with `X-Robots-Tag: noindex` to keep the staging copy out of search engines — Cloudflare-only, remove at launch. GitHub Pages preview stays active in parallel.
 - **2026-05-06** — **Mobile navigation** added across all four pages. Previously the desktop nav was just hidden at ≤900px, which left mobile users with no way to reach other pages. Now a hamburger button sits next to the YouTube button on mobile and toggles a dropdown menu (`.mobile-nav`) with all four links. The dropdown is a sibling of the row inside `<header class="topbar">`, so it inherits the sticky positioning naturally. Bars animate to an X via CSS; toggle JS is duplicated inline on each page (about/learn-blender/support gained their first `<script>` block). Also added `aria-label="Primary"` to the desktop navs to satisfy the "two `<nav>` landmarks need distinct labels" a11y rule.
