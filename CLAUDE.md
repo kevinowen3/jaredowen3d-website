@@ -22,6 +22,7 @@ Plain static site. **No build step**, no framework, no package manager.
 ├── support.html            Support — Patreon CTA, supporter list, PayPal + YouTube CTAs
 ├── assets/
 │   ├── logo.png            Channel wordmark (teal "JaredOwen Animations") — used by all 4 pages
+│   ├── favicon.jpg         JO book/rocket logo, 192px — favicon + apple-touch-icon on all 4 pages (from Wix CDN)
 │   ├── youtube-logo.png    YouTube wordmark — used as nav button on all 4 pages
 │   ├── jared-headshot.jpg  Used on about.html
 │   ├── hero-loop.mp4       720p H.264, ~3.5 MB, 30s — homepage hero (two-pass, 950 kbps)
