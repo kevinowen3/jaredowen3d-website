@@ -118,7 +118,7 @@ Two hosts deploy automatically from `main` (repo: https://github.com/kevinowen3/
 
 **The site is indexable.** The `_headers` file that sent `X-Robots-Tag: noindex` throughout staging was deleted on 2026-09-09 — there is no longer a `_headers` file, so don't go looking for one. If indexing ever needs suppressing again, recreate it with `/*` + `X-Robots-Tag: noindex` (Cloudflare only; GitHub Pages ignores `_headers` entirely, which is why the kevinowen3.github.io preview was always indexable).
 
-**jaredowen3d.com is the canonical site.** As of 2026-09-09 **jaredowenanimations.com no longer serves the site** — it is a pure 301 onto jaredowen3d.com, preserving path and query string in a single hop. Don't re-add it as a Worker custom domain; that would silently take precedence over the redirect and resurrect the duplicate.
+**jaredowen3d.com is the canonical site.** As of 2026-09-09 **jaredowenanimations.com no longer serves the site** — it is a pure 301 onto jaredowen3d.com, preserving path and query string in a single hop. Its zone is now redirect-only, so there's no reason to re-attach it to the Worker. (Doing so would *not* actually bypass the redirect — rules fire ahead of Worker custom domains, as the www rule demonstrates — but it would recreate DNS records that the redirect-only setup doesn't want.)
 
 `www.jaredowen3d.com` likewise 301s to the apex (2026-09-09) — the apex is the canonical form, so use bare `jaredowen3d.com` in any link, sitemap or canonical tag. "Always Use HTTPS" is on for the zone, and every entry point (either hostname, either scheme, either domain) reaches the canonical HTTPS apex URL in exactly **one hop** with the query string intact. That single-hop property is worth re-checking after any future redirect change; chains creep in easily.
 
@@ -139,7 +139,7 @@ In rough priority order — none of these are blocking the current state of the 
 - [ ] **Contact form** via [Formspree](https://formspree.io/) — useful for press/sponsor inquiries. Free tier: 50 submissions/month.
 - [ ] **Get a white-text version of the channel logo** from Jared. The current `logo.png` has a dark "Animations" subtitle that reads poorly on the navy banner.
 - [ ] **Newsletter signup** (deferred — Buttondown or ConvertKit when there's an audience to send to).
-- [ ] ~~**Social links footer**? The original Wix site had a "Find Jared online" social row.~~ Done 2026-05-06 — see decisions log.
+- ✅ ~~**Social links footer**? The original Wix site had a "Find Jared online" social row.~~ Done 2026-05-06 — see decisions log.
 
 ## Brief log of decisions
 
