@@ -120,7 +120,7 @@ Two hosts deploy automatically from `main` (repo: https://github.com/kevinowen3/
 
 **jaredowen3d.com is the canonical site.** As of 2026-09-09 **jaredowenanimations.com no longer serves the site** — it is a pure 301 onto jaredowen3d.com, preserving path and query string in a single hop. Don't re-add it as a Worker custom domain; that would silently take precedence over the redirect and resurrect the duplicate.
 
-`www.jaredowen3d.com` likewise 301s to the apex (2026-09-09) — the apex is the canonical form, so use bare `jaredowen3d.com` in any link, sitemap or canonical tag.
+`www.jaredowen3d.com` likewise 301s to the apex (2026-09-09) — the apex is the canonical form, so use bare `jaredowen3d.com` in any link, sitemap or canonical tag. "Always Use HTTPS" is on for the zone, and every entry point (either hostname, either scheme, either domain) reaches the canonical HTTPS apex URL in exactly **one hop** with the query string intact. That single-hop property is worth re-checking after any future redirect change; chains creep in easily.
 
 Two copies of the site are still live and indexable and are *not* covered by either redirect: the GitHub Pages preview and the Worker's own `.workers.dev` URL. See todos.
 
@@ -128,11 +128,12 @@ Two copies of the site are still live and indexable and are *not* covered by eit
 
 In rough priority order — none of these are blocking the current state of the site.
 
-- [ ] **Turn on "Always Use HTTPS" for the jaredowen3d.com zone** (SSL/TLS → Edge Certificates). `http://jaredowen3d.com/about` currently answers **200 over plain HTTP** rather than upgrading — the setting was enabled on the jaredowenanimations.com zone back on 2026-08-03, but jaredowen3d.com is a newer zone from the cutover and never got it. (`http://www` is already fine: the www redirect sends it straight to HTTPS.)
 - [ ] **Deal with the two remaining duplicate copies of the site.** Neither is covered by the jaredowenanimations.com redirect, and both are publicly indexable:
   - `kevinowen3.github.io/jaredowen3d-website` — GitHub Pages ignores `_headers`, so the staging `noindex` never applied to it either. Switch Pages off now that Cloudflare is production, or add `rel="canonical"` tags.
   - `jaredowen3d-website.kevin-29d.workers.dev` — the Worker's own URL, enabled and marked "Anyone with this URL can visit" (Worker → Domains tab, top of page). Almost certainly safe to toggle off since the custom domains carry all real traffic, but verify before flipping it.
 - ✅ ~~**Point jaredowenanimations.com at production with a 301.**~~ Done 2026-09-09 — see decisions log.
+- ✅ ~~**Redirect www to the apex.**~~ Done 2026-09-09 — see decisions log.
+- ✅ ~~**Turn on "Always Use HTTPS" for the jaredowen3d.com zone.**~~ Done 2026-09-09. **HSTS was deliberately left off** — it instructs browsers to refuse plain HTTP for months and is cached client-side, so a certificate problem can't be undone by flipping the switch back. Revisit only once the zone has a long, uneventful track record.
 - [ ] **Audit old Wix URLs.** Any path the Wix site had that this site doesn't will 404 for previously-indexed links and old inbound links. Worth listing them and adding Cloudflare redirects.
 - ✅ ~~**Remove the `noindex` header.**~~ Done 2026-09-09 — see decisions log.
 - [ ] **Contact form** via [Formspree](https://formspree.io/) — useful for press/sponsor inquiries. Free tier: 50 submissions/month.
