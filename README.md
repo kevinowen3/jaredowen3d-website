@@ -35,6 +35,6 @@ Channel stats (`stats.json`) and latest videos (`videos.json`) are refreshed by 
 
 - Hook up a contact form via [Formspree](https://formspree.io/) for press / sponsor inquiries.
 - Add a newsletter signup (Buttondown, ConvertKit) when there's an audience to send to.
-- Add `rel="canonical"` tags so the jaredowenanimations.com and GitHub Pages copies don't compete with jaredowen3d.com in search results.
-- Decide whether `jaredowenanimations.com` should redirect to `jaredowen3d.com` instead of serving a second copy.
+- Redirect `jaredowenanimations.com` to `jaredowen3d.com` with a 301, so there is only one real site.
+- Decide what to do with the GitHub Pages preview, which serves a third copy of the same pages.
 - Check whether any old Wix URLs now 404, and add redirects for them.

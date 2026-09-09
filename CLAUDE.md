@@ -114,14 +114,14 @@ Two hosts deploy automatically from `main` (repo: https://github.com/kevinowen3/
 
 **The site is indexable.** The `_headers` file that sent `X-Robots-Tag: noindex` throughout staging was deleted on 2026-09-09 — there is no longer a `_headers` file, so don't go looking for one. If indexing ever needs suppressing again, recreate it with `/*` + `X-Robots-Tag: noindex` (Cloudflare only; GitHub Pages ignores `_headers` entirely, which is why the kevinowen3.github.io preview was always indexable).
 
-**Duplicate-content caveat:** the same markup is served from three hostnames — jaredowen3d.com, jaredowenanimations.com, and the GitHub Pages preview — and none of the pages carry a `rel="canonical"` tag. Until either a canonical tag is added or jaredowenanimations.com is switched to a 301, search engines are free to pick whichever copy they like.
+**Duplicate content:** the same markup is currently served from three hostnames — jaredowen3d.com, jaredowenanimations.com, and the GitHub Pages preview — with no `rel="canonical"` anywhere, so search engines are free to pick whichever copy they like. **jaredowen3d.com is the canonical site**; jaredowenanimations.com is to be reduced to a 301 onto it (see todos). Don't add jaredowenanimations.com back as a Worker custom domain.
 
 ## Open todos
 
 In rough priority order — none of these are blocking the current state of the site.
 
-- [ ] **Add `rel="canonical"` tags** pointing at the jaredowen3d.com URL of each page, so the jaredowenanimations.com and GitHub Pages copies don't compete with production in search results. Follow-on from removing `noindex`.
-- [ ] **Decide what jaredowenanimations.com does** now that production is live — 301 to jaredowen3d.com, or keep serving a duplicate copy.
+- [ ] **Point jaredowenanimations.com at production with a 301** (decided 2026-09-09 — jaredowen3d.com is the one real site). Dashboard-only work, no repo change: detach both `jaredowenanimations.com` and `www.` from the Worker's Domains & Routes, re-add proxied AAAA records for `@` and `www` pointing at `100::` (the discard prefix — the orange cloud is what matters, not the target), then a zone Redirect Rule doing a 301 to `concat("https://jaredowen3d.com", http.request.uri.path)` with query strings preserved. Detaching first is the point: while the hostname is a Worker custom domain the Worker answers it.
+- [ ] **Deal with the GitHub Pages copy** — `kevinowen3.github.io/jaredowen3d-website` serves the same markup, is not covered by the redirect above, and has always been indexable (GitHub Pages ignores `_headers`, so the staging `noindex` never applied to it either). Either switch Pages off now that Cloudflare is production, or add `rel="canonical"` tags. Undecided.
 - [ ] **Audit old Wix URLs.** Any path the Wix site had that this site doesn't will 404 for previously-indexed links and old inbound links. Worth listing them and adding Cloudflare redirects.
 - ✅ ~~**Remove the `noindex` header.**~~ Done 2026-09-09 — see decisions log.
 - [ ] **Contact form** via [Formspree](https://formspree.io/) — useful for press/sponsor inquiries. Free tier: 50 submissions/month.
