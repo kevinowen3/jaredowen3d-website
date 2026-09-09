@@ -1,6 +1,6 @@
 # Jared Owen Animations Website
 
-Rebuild of [jaredowen3d.com](https://www.jaredowen3d.com/) — moving from Wix to a static site so Jared has more control and flexibility. The live Wix site is still authoritative until cutover.
+Rebuild of [jaredowen3d.com](https://www.jaredowen3d.com/) — moved off Wix to a static site so Jared has more control and flexibility. **Cutover is done: this repo is what serves jaredowen3d.com.** Wix is out of the picture.
 
 The folder lives in a shared Dropbox so Jared can see and contribute as the site evolves. Treat changes as visible to a second collaborator (Jared), not just to Kevin.
 
@@ -31,7 +31,6 @@ Plain static site. **No build step**, no framework, no package manager.
 │   └── hero-descriptions.vtt   Empty WebVTT — same reason
 ├── stats.json              Live YouTube channel stats — written by the update-stats Action
 ├── videos.json             Latest 3 long-form videos — written by the update-videos Action
-├── _headers                Cloudflare Pages headers — X-Robots-Tag: noindex while staging (remove at launch)
 ├── .github/
 │   ├── workflows/
 │   │   ├── update-stats.yml    Cron every 6h at :17 — refreshes stats.json
@@ -81,6 +80,7 @@ Brand-specific accent colors (only on support.html):
 - YouTube button is a sibling of `<nav>`, not inside it — needed so it can occupy its own grid column. CSS selector is `.yt-btn`, not `.nav .yt-btn`
 - Right-side YouTube button is the **YouTube wordmark image** in a transparent pill (hover gives a subtle white tint backdrop)
 - Active page highlighted with `background: #1f3463;` via `.active` class
+- The nav carries five links: Welcome, About, Learn Blender, Support, and **Store**. Store is the only *external* one — it points straight at `https://store.jaredowen3d.com/` (Fourthwall), so it never gets `.active` and it doesn't depend on any host-level redirect
 - Mobile (`max-width: 900px`): the desktop `.nav` link row is hidden and a hamburger button (`.menu-btn`) appears next to the YouTube button. Tapping it toggles `.is-open` on the topbar, which reveals `.mobile-nav` (a dropdown panel below the row, also rendered into the same `<header class="topbar">`) and animates the three bars into an X via CSS. A small inline script wires the click handler and Escape-to-close. There are now two `<nav>` landmarks per page (`.nav aria-label="Primary"`, `.mobile-nav aria-label="Site navigation"`) — keep both in sync when adding or renaming links
 
 ### Inner pages (about / learn-blender / support)
@@ -107,17 +107,23 @@ Avoid Python's `http.server` for video work — its HTTP Range request support i
 
 Two hosts deploy automatically from `main` (repo: https://github.com/kevinowen3/jaredowen3d-website):
 
-- **Cloudflare Pages** — staging at **jaredowenanimations.com** (domain registered at Zoho, nameservers on Cloudflare, free plan). No build step: framework preset "None", output directory `/`. The `_headers` file sends `X-Robots-Tag: noindex` on the Cloudflare deployment only, keeping the staging site out of search indexes until launch.
+- **Cloudflare** — serves **jaredowen3d.com** (production) *and* **jaredowenanimations.com**, both attached as custom domains on the same `jaredowen3d-website` Worker. No build step: framework preset "None", output directory `/`. Verified 2026-09-09: jaredowen3d.com is on Cloudflare nameservers (`terin`/`millie.ns.cloudflare.com`), resolves to Cloudflare, and returns this repo's markup.
 - **GitHub Pages** — preview at **https://kevinowen3.github.io/jaredowen3d-website/** (deploy from `main`, root).
 
-**jaredowen3d.com is still the live Wix site** and must stay untouched until final cutover. Its DNS is on Wix nameservers and carries the Zoho MX/SPF/DKIM records for the business email — any future migration of that zone must copy those records exactly or email breaks. jaredowenanimations.com carries no email (verified 2026-08-01: no MX records).
+**Cutover off Wix is complete.** jaredowen3d.com's zone moved to Cloudflare with the Zoho mail records intact — MX still `mx`/`mx2`/`mx3.zoho.com` (verified 2026-09-09), so business email is unaffected. Any future change to this zone must keep those MX/SPF/DKIM records or email breaks. jaredowenanimations.com carries no email (verified 2026-08-01: no MX records).
 
-Final cutover (later, when ready): repoint `jaredowen3d.com` (preserving Zoho mail records), remove the `noindex` header, and decide which domain redirects to which.
+**The site is indexable.** The `_headers` file that sent `X-Robots-Tag: noindex` throughout staging was deleted on 2026-09-09 — there is no longer a `_headers` file, so don't go looking for one. If indexing ever needs suppressing again, recreate it with `/*` + `X-Robots-Tag: noindex` (Cloudflare only; GitHub Pages ignores `_headers` entirely, which is why the kevinowen3.github.io preview was always indexable).
+
+**Duplicate-content caveat:** the same markup is served from three hostnames — jaredowen3d.com, jaredowenanimations.com, and the GitHub Pages preview — and none of the pages carry a `rel="canonical"` tag. Until either a canonical tag is added or jaredowenanimations.com is switched to a 301, search engines are free to pick whichever copy they like.
 
 ## Open todos
 
 In rough priority order — none of these are blocking the current state of the site.
 
+- [ ] **Add `rel="canonical"` tags** pointing at the jaredowen3d.com URL of each page, so the jaredowenanimations.com and GitHub Pages copies don't compete with production in search results. Follow-on from removing `noindex`.
+- [ ] **Decide what jaredowenanimations.com does** now that production is live — 301 to jaredowen3d.com, or keep serving a duplicate copy.
+- [ ] **Audit old Wix URLs.** Any path the Wix site had that this site doesn't will 404 for previously-indexed links and old inbound links. Worth listing them and adding Cloudflare redirects.
+- ✅ ~~**Remove the `noindex` header.**~~ Done 2026-09-09 — see decisions log.
 - [ ] **Contact form** via [Formspree](https://formspree.io/) — useful for press/sponsor inquiries. Free tier: 50 submissions/month.
 - [ ] **Get a white-text version of the channel logo** from Jared. The current `logo.png` has a dark "Animations" subtitle that reads poorly on the navy banner.
 - [ ] **Newsletter signup** (deferred — Buttondown or ConvertKit when there's an audience to send to).
@@ -142,4 +148,9 @@ In rough priority order — none of these are blocking the current state of the 
 - **2026-05-06** — **PayPal mark in the donate button**: first attempt was an inline SVG of the PayPal "PP" monogram. The simple-icons single-path version rendered as a flat blob; splitting into two paths with the back P at lower opacity helped, but still didn't read as the brand. Final approach: dropped the SVG and replaced the button's plain "Donate with PayPal" text with an italic, weight-800 two-tone wordmark — `Pay` in white, `Pal` in `#66c5f0` (PayPal sky cyan, contrast 6.4:1 against the navy `--paypal` button bg). Reads instantly as the PayPal logo lockup, no asset needed. Markup uses two nested spans so the styling is purely a CSS concern.
 - **2026-08-01** — **Cloudflare Pages staging decided**: the new site will stage at `jaredowenanimations.com` (previously a Zoho-served 301 redirect to jaredowen3d.com) via Cloudflare Pages connected to the GitHub repo, while Wix keeps serving `jaredowen3d.com`. Domain registration stays at Zoho; only its nameservers move to Cloudflare. Verified the domain has no MX records, so the move can't affect email (which lives on jaredowen3d.com's zone). Added `_headers` with `X-Robots-Tag: noindex` to keep the staging copy out of search engines — Cloudflare-only, remove at launch. GitHub Pages preview stays active in parallel.
 - **2026-08-03** — **Staging went live at jaredowenanimations.com.** The Cloudflare zone activated after the nameserver switch, and both `jaredowenanimations.com` and `www.jaredowenanimations.com` were attached as custom domains on the `jaredowen3d-website` Worker (Workers & Pages → Domains tab). Verified: HTTPS 200 on both hostnames, live stats.json, hero video, and the `x-robots-tag: noindex` header. Note: the Worker serves clean URLs — `/about.html` 307-redirects to `/about`. Same day: internal links normalized to clean URLs (`about`, `./`), favicon added (`assets/favicon.jpg`, JO logo from the Wix CDN, linked on all 4 pages), and "Always Use HTTPS" enabled on the zone so `http://` 301s to `https://`. Ops note: Cloudflare's git-connected builds can lag 10–40 min behind a push with no failure shown; check the Deployments tab's "Active deployment" before debugging. GitHub Pages deploys the same commit independently (its checks are named build/deploy — easy to mistake for Cloudflare's).
+- **2026-09-09** — **Store tab added** as a fifth nav item on all four pages (desktop `.nav` and `.mobile-nav`), linking directly to `https://store.jaredowen3d.com/` rather than to a local `/store` path. Direct-link was chosen over a `/store` redirect so the tab works identically on every host (jaredowen3d.com, jaredowenanimations.com, and the GitHub Pages preview) with no dashboard configuration. Verified by headless screenshot that five links still fit the centered grid down to 940px — no CSS change was needed.
+- **2026-09-09** — **The store is [Fourthwall](https://fourthwall.com/)**, not Shopify (an earlier note in this file guessed Shopify from the Rails-ish response headers — wrong). It is in Fourthwall's pre-launch state: `store.jaredowen3d.com/` 302s to `/password`, which renders a public **"Coming soon" page with a mailing-list signup**. That is what *every* visitor sees, signed in or not — so the new Store tab currently leads to that holding page until Jared publishes the store in Fourthwall.
+- **2026-09-09** — **`jaredowen3d.com/store` decided against as a proxy.** A 301 redirect (`/store` → the subdomain) is easy via a Cloudflare Redirect Rule and remains available if wanted; today the path is a plain 404. *Serving* the storefront under a subpath via reverse proxy was rejected — hosted storefronts like Fourthwall emit absolute URLs against their own hostname, scope cart/session cookies to it, and hand checkout off to their own domain, so a proxy looks right until someone tries to buy something.
+- **2026-09-09** — **`noindex` removed; the site is now open to search engines.** Deleted `_headers` entirely (its only contents were `/*` + `X-Robots-Tag: noindex`), which had been added for the staging period and outlived it — it was still suppressing indexing of the live jaredowen3d.com. Known side effects, both accepted at the time: jaredowenanimations.com and the GitHub Pages preview serve the same markup and are now equally indexable (no `rel="canonical"` yet), and any URL the old Wix site had that this one lacks now 404s for already-indexed links. Both are tracked in the todos above.
+- **2026-09-09** — **Verified the Wix cutover is complete** (it had happened in an earlier session and was never written down; exact date unknown). jaredowen3d.com now runs on Cloudflare nameservers and serves this repo. Zoho MX records survived the zone move. The `noindex` header did *not* get removed as part of it — see Hosting.
 - **2026-05-06** — **Mobile navigation** added across all four pages. Previously the desktop nav was just hidden at ≤900px, which left mobile users with no way to reach other pages. Now a hamburger button sits next to the YouTube button on mobile and toggles a dropdown menu (`.mobile-nav`) with all four links. The dropdown is a sibling of the row inside `<header class="topbar">`, so it inherits the sticky positioning naturally. Bars animate to an X via CSS; toggle JS is duplicated inline on each page (about/learn-blender/support gained their first `<script>` block). Also added `aria-label="Primary"` to the desktop navs to satisfy the "two `<nav>` landmarks need distinct labels" a11y rule.

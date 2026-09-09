@@ -16,16 +16,18 @@ Each page is self-contained: HTML + inline `<style>` + inline `<script>`. No bui
 
 The site deploys automatically from this repository — push to `main` and both hosts update:
 
-- **Cloudflare Pages** (staging domain): serves **jaredowenanimations.com**. Connected to this repo; every push to `main` deploys in under a minute. No build step — framework preset "None", output directory `/`. The `_headers` file sends `X-Robots-Tag: noindex` so the staging site stays out of search engines until launch (Cloudflare-only; GitHub Pages ignores it).
+- **Cloudflare** (production): serves **jaredowen3d.com** and **jaredowenanimations.com** from the same Worker. Connected to this repo; every push to `main` deploys in under a minute. No build step — framework preset "None", output directory `/`.
 - **GitHub Pages** (preview): serves [kevinowen3.github.io/jaredowen3d-website](https://kevinowen3.github.io/jaredowen3d-website/) from the `main` branch, root folder.
 
-The old Wix site remains live at **jaredowen3d.com** (with Zoho email on that domain) until final cutover.
+The move off Wix is complete — **jaredowen3d.com is this site**, with the Zoho email records carried over intact.
+
+Search indexing is on. The `X-Robots-Tag: noindex` header used during staging was removed on 2026-09-09, so the site is now open to Google.
 
 ### Making an update
 
 1. Edit files locally; preview with `npx serve .` from the project root → http://localhost:3000
 2. `git add` / `git commit` / `git push`
-3. Watch the deployment in Cloudflare (Workers & Pages → project → Deployments), then refresh jaredowenanimations.com
+3. Watch the deployment in Cloudflare (Workers & Pages → project → Deployments), then refresh jaredowen3d.com
 
 Channel stats (`stats.json`) and latest videos (`videos.json`) are refreshed by scheduled GitHub Actions, which commit to `main` and therefore also redeploy the site automatically.
 
@@ -33,4 +35,6 @@ Channel stats (`stats.json`) and latest videos (`videos.json`) are refreshed by 
 
 - Hook up a contact form via [Formspree](https://formspree.io/) for press / sponsor inquiries.
 - Add a newsletter signup (Buttondown, ConvertKit) when there's an audience to send to.
-- Final cutover: move `jaredowen3d.com` off Wix (carefully preserving Zoho MX/SPF/DKIM records) and remove the `noindex` header.
+- Add `rel="canonical"` tags so the jaredowenanimations.com and GitHub Pages copies don't compete with jaredowen3d.com in search results.
+- Decide whether `jaredowenanimations.com` should redirect to `jaredowen3d.com` instead of serving a second copy.
+- Check whether any old Wix URLs now 404, and add redirects for them.
