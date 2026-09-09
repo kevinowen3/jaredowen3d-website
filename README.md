@@ -17,7 +17,7 @@ Each page is self-contained: HTML + inline `<style>` + inline `<script>`. No bui
 The site deploys automatically from this repository — push to `main` and both hosts update:
 
 - **Cloudflare** (production): serves **jaredowen3d.com**. Connected to this repo; every push to `main` deploys in under a minute. No build step — framework preset "None", output directory `/`.
-- **jaredowenanimations.com** permanently redirects to jaredowen3d.com, keeping the path and query string.
+- **jaredowenanimations.com** and **www.jaredowen3d.com** both permanently redirect to jaredowen3d.com, keeping the path and query string. The bare `jaredowen3d.com` is the canonical address — use that form in links.
 - **GitHub Pages** (preview): serves [kevinowen3.github.io/jaredowen3d-website](https://kevinowen3.github.io/jaredowen3d-website/) from the `main` branch, root folder.
 
 The move off Wix is complete — **jaredowen3d.com is this site**, with the Zoho email records carried over intact.
@@ -36,5 +36,6 @@ Channel stats (`stats.json`) and latest videos (`videos.json`) are refreshed by 
 
 - Hook up a contact form via [Formspree](https://formspree.io/) for press / sponsor inquiries.
 - Add a newsletter signup (Buttondown, ConvertKit) when there's an audience to send to.
+- Turn on "Always Use HTTPS" for jaredowen3d.com in Cloudflare — plain `http://` requests to the bare domain are currently served without upgrading to HTTPS.
 - Decide what to do with the two remaining public copies of the site — the GitHub Pages preview and the Worker's own `.workers.dev` URL — both of which duplicate jaredowen3d.com in search results.
 - Check whether any old Wix URLs now 404, and add redirects for them.
