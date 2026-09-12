@@ -18,7 +18,7 @@ Plain static site. **No build step**, no framework, no package manager.
 .
 ├── index.html              Welcome — full-bleed hero video, stats, latest videos rail
 ├── about.html              About — bio, headshot, press mentions
-├── learn-blender.html      Learn Blender — resource cards + "other YouTube channels" grid
+├── learn-blender.html      Learn Blender — resource cards + "other YouTube channels" grid. NOT in the nav; reached from the CTA at the bottom of about.html
 ├── support.html            Support — Patreon CTA, supporter list, PayPal + YouTube CTAs
 ├── assets/
 │   ├── logo.png            Channel wordmark (teal "JaredOwen Animations") — used by all 4 pages
@@ -80,7 +80,7 @@ Brand-specific accent colors (only on support.html):
 - YouTube button is a sibling of `<nav>`, not inside it — needed so it can occupy its own grid column. CSS selector is `.yt-btn`, not `.nav .yt-btn`
 - Right-side YouTube button is the **YouTube wordmark image** in a transparent pill (hover gives a subtle white tint backdrop)
 - Active page highlighted with `background: #1f3463;` via `.active` class
-- The nav carries five links: Welcome, About, Learn Blender, Support, and **Store**. Store is the only *external* one — it points straight at `https://store.jaredowen3d.com/` (Fourthwall), so it never gets `.active` and it doesn't depend on any host-level redirect
+- The nav carries four links: Welcome, About, Support, and **Store**. (Learn Blender was dropped from the nav on 2026-09-12 — the page still exists and is linked from a "Do you want to learn Blender?" CTA at the bottom of about.html.) Store is the only *external* one — it points straight at `https://store.jaredowen3d.com/` (Fourthwall), so it never gets `.active` and it doesn't depend on any host-level redirect
 - Mobile (`max-width: 900px`): the desktop `.nav` link row is hidden and a hamburger button (`.menu-btn`) appears next to the YouTube button. Tapping it toggles `.is-open` on the topbar, which reveals `.mobile-nav` (a dropdown panel below the row, also rendered into the same `<header class="topbar">`) and animates the three bars into an X via CSS. A small inline script wires the click handler and Escape-to-close. There are now two `<nav>` landmarks per page (`.nav aria-label="Primary"`, `.mobile-nav aria-label="Site navigation"`) — keep both in sync when adding or renaming links
 
 ### Inner pages (about / learn-blender / support)
@@ -177,4 +177,5 @@ In rough priority order — none of these are blocking the current state of the 
 
   Note the *Preserve query string* checkbox is not a free win — it appends the query, so it must be **off** with a `full_uri`-based expression (which already carries it) and **on** with a `uri.path`-based one. Ticking it in the wrong pairing yields `?a=1?a=1`.
 - **2026-09-09** — **Verified the Wix cutover is complete** (it had happened in an earlier session and was never written down; exact date unknown). jaredowen3d.com now runs on Cloudflare nameservers and serves this repo. Zoho MX records survived the zone move. The `noindex` header did *not* get removed as part of it — see Hosting.
+- **2026-09-12** — **Learn Blender removed from the nav, page kept.** Jared wanted a leaner topbar. The `learn-blender` link was deleted from both `.nav` and `.mobile-nav` on all four pages, and `learn-blender.html` itself is unchanged apart from losing its `.active` nav item (nothing in its nav is highlighted now, which is fine). The page's new front door is a `.learn-cta` section at the bottom of `about.html`, between the press list and the footer: an `--accent-soft` card with the heading "Do you want to learn Blender?", a one-line pitch, and a pill button to the page. The URL still works directly and from search engines, so no redirect was needed. Since the page has no nav highlight anymore, it carries two "← Back to About" links: `.back-link` above the crumb in the page head, and `.back-row` just above the footer.
 - **2026-05-06** — **Mobile navigation** added across all four pages. Previously the desktop nav was just hidden at ≤900px, which left mobile users with no way to reach other pages. Now a hamburger button sits next to the YouTube button on mobile and toggles a dropdown menu (`.mobile-nav`) with all four links. The dropdown is a sibling of the row inside `<header class="topbar">`, so it inherits the sticky positioning naturally. Bars animate to an X via CSS; toggle JS is duplicated inline on each page (about/learn-blender/support gained their first `<script>` block). Also added `aria-label="Primary"` to the desktop navs to satisfy the "two `<nav>` landmarks need distinct labels" a11y rule.

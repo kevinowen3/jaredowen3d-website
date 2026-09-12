@@ -202,6 +202,39 @@
       font-size: 0.9rem;
     }
 
+    /* Learn Blender pointer. The Learn Blender page was dropped from the
+       main nav (2026-09-12) but kept live; this is now its primary entry point. */
+    .learn-cta {
+      background: var(--paper);
+      border-top: 1px solid var(--line);
+      padding: 4rem 2.5rem;
+    }
+    .learn-cta-inner {
+      max-width: 1100px; margin: 0 auto;
+      background: var(--accent-soft);
+      border: 1px solid var(--line);
+      border-radius: 1.2rem;
+      padding: 2.4rem 2.2rem;
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+      gap: 1.4rem 2rem;
+    }
+    .learn-cta h2 {
+      font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 700;
+      letter-spacing: -0.02em; margin: 0 0 0.35rem;
+    }
+    .learn-cta p {
+      margin: 0; color: var(--ink-soft); font-size: 1.05rem; max-width: 34rem;
+    }
+    .learn-cta .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--accent); color: white;
+      padding: 0.85rem 1.4rem; border-radius: 999px;
+      font-weight: 600; font-size: 1rem; white-space: nowrap;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .learn-cta .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
     /* Footer */
     /* Site footer — navy band with social row + copyright. Bookend match
        for the navy topbar at the top of every page. */
@@ -261,6 +294,8 @@
       }
       .about-image { position: static; max-width: 320px; margin: 0 auto; }
       .press { padding: 3rem 1.4rem; }
+      .learn-cta { padding: 3rem 1.4rem; }
+      .learn-cta-inner { padding: 1.8rem 1.5rem; }
     }
   </style>
 </head>
@@ -272,7 +307,6 @@
     <nav class="nav" aria-label="Primary">
       <a href="./">Welcome</a>
       <a href="about" class="active">About</a>
-      <a href="learn-blender">Learn Blender</a>
       <a href="support">Support</a>
       <a href="https://store.jaredowen3d.com/">Store</a>
     </nav>
@@ -287,7 +321,6 @@
     <nav class="mobile-nav" id="mobile-nav" aria-label="Site navigation">
       <a href="./">Welcome</a>
       <a href="about" class="active">About</a>
-      <a href="learn-blender">Learn Blender</a>
       <a href="support">Support</a>
       <a href="https://store.jaredowen3d.com/">Store</a>
     </nav>
@@ -335,6 +368,16 @@
           <div class="arrow">Read article →</div>
         </a>
       </div>
+    </div>
+  </section>
+
+  <section class="learn-cta">
+    <div class="learn-cta-inner">
+      <div>
+        <h2>Do you want to learn Blender?</h2>
+        <p>Blender is free, and I've put together the courses and creators I'd recommend for getting started.</p>
+      </div>
+      <a class="btn" href="learn-blender">Learn Blender →</a>
     </div>
   </section>
 

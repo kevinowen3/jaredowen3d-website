@@ -130,6 +130,25 @@
       letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.78rem;
       font-weight: 700; color: #8fb6ff; margin-bottom: 1rem;
     }
+    /* "Back to About" — this page is off the main nav (2026-09-12) and is
+       reached from about.html, so give visitors an obvious way back. */
+    .page-head .back-link {
+      display: inline-block; margin-bottom: 1.2rem;
+      font-size: 0.9rem; font-weight: 600; color: #8fb6ff;
+      border-bottom: 1px solid rgba(143, 182, 255, 0.35);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .page-head .back-link:hover { color: white; border-bottom-color: white; }
+    .back-row {
+      max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 4rem;
+    }
+    .back-row a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--accent); font-weight: 600;
+      border-bottom: 1px solid var(--accent-soft);
+      transition: border-color 0.15s;
+    }
+    .back-row a:hover { border-bottom-color: var(--accent); }
     .page-head h1 {
       font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1;
       font-weight: 800; letter-spacing: -0.03em; margin: 0;
@@ -290,7 +309,6 @@
     <nav class="nav" aria-label="Primary">
       <a href="./">Welcome</a>
       <a href="about">About</a>
-      <a href="learn-blender" class="active">Learn Blender</a>
       <a href="support">Support</a>
       <a href="https://store.jaredowen3d.com/">Store</a>
     </nav>
@@ -305,7 +323,6 @@
     <nav class="mobile-nav" id="mobile-nav" aria-label="Site navigation">
       <a href="./">Welcome</a>
       <a href="about">About</a>
-      <a href="learn-blender" class="active">Learn Blender</a>
       <a href="support">Support</a>
       <a href="https://store.jaredowen3d.com/">Store</a>
     </nav>
@@ -314,6 +331,7 @@
   <section class="page-head">
     <div class="page-head-inner">
       <div class="page-head-text">
+        <a class="back-link" href="about">← Back to About</a>
         <div class="crumb">Learn Blender</div>
         <h1>Start your journey with Blender</h1>
         <p class="subhead">Free 3D animation software, plus the courses and creators Jared recommends to get started.</p>
@@ -406,6 +424,10 @@
       </a>
     </div>
   </section>
+
+  <div class="back-row">
+    <a href="about">← Back to About</a>
+  </div>
 
   <footer>
     <div class="footer-inner">
