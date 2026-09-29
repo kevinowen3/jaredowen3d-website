@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- TEMPORARY internal test page. Not linked from anywhere on the site.
+       The site is live and indexable, so this robots meta tag is the only
+       thing keeping the page out of search results. Keep it.
+       Delete the lab/ folder once the HD-vs-4K decision is made. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>4K Test | Jared Owen Animations</title>
+  <meta name="description" content="Internal test page comparing HD, upscaled 4K and native 4K versions of the same Falkirk Wheel animation clip." />
+  <link rel="icon" type="image/jpeg" href="../assets/favicon.jpg" />
+  <link rel="apple-touch-icon" href="../assets/favicon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #ffffff;
+      --surface: #f7fbff;
+      --ink: #0e1e3f;
+      --ink-soft: #4b587a;
+      --line: #e6ebf2;
+      --accent: #2758c4;
+      --accent-hover: #1d4aa8;
+      --accent-soft: #eaf0fc;
+      --shadow-sm: 0 6px 20px rgba(14, 30, 63, 0.08);
+      --shadow-md: 0 24px 60px rgba(14, 30, 63, 0.18);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Inter Tight', system-ui, sans-serif;
+      background: var(--paper); color: var(--ink);
+      line-height: 1.55; -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Slim topbar: logo only, no site nav. This page is intentionally
+       outside the site's navigation, so it should not look like a real page. */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 1rem 2.5rem;
+      background: var(--ink);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .brand { display: flex; align-items: center; }
+    .brand img { height: 3.5rem; width: auto; }
+    .test-tag {
+      font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
+      font-weight: 700; color: #8fb6ff;
+      border: 1px solid rgba(143, 182, 255, 0.45); border-radius: 999px;
+      padding: 0.4rem 0.85rem; white-space: nowrap;
+    }
+
+    /* Page header band (same treatment as the inner pages) */
+    .page-head {
+      background: var(--ink); color: white;
+      padding: 4rem 2.5rem 4.5rem;
+      border-bottom: 4px solid var(--accent);
+    }
+    .page-head-inner { max-width: 1100px; margin: 0 auto; }
+    .page-head .crumb {
+      letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.78rem;
+      font-weight: 700; color: #8fb6ff; margin-bottom: 1rem;
+    }
+    .page-head h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.02;
+      font-weight: 800; letter-spacing: -0.03em; margin: 0;
+    }
+    .page-head .subhead {
+      margin-top: 1rem; font-size: 1.15rem; color: rgba(255, 255, 255, 0.85);
+      max-width: 38rem;
+    }
+
+    /* Clip cards: 2x2 grid so all four sit on one screen for comparison */
+    .clips { max-width: 1100px; margin: 0 auto; padding: 3.5rem 2.5rem 4rem; }
+    .clips .lead { color: var(--ink-soft); margin: 0 0 2rem; font-size: 1.05rem; max-width: 46rem; }
+    .clip-grid {
+      display: grid; gap: 1.4rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .clip-card {
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 1rem; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .clip-card:hover {
+      border-color: var(--accent); transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .clip-card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .clip-thumb {
+      position: relative; aspect-ratio: 16 / 9;
+      background: var(--ink); overflow: hidden;
+    }
+    .clip-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .clip-num {
+      position: absolute; top: 0.8rem; left: 0.8rem;
+      width: 2.1rem; height: 2.1rem; border-radius: 50%;
+      background: var(--accent); color: white;
+      font-weight: 800; font-size: 1rem;
+      display: grid; place-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+    .clip-play {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      background: rgba(10, 22, 50, 0.25);
+      opacity: 0; transition: opacity 0.15s;
+    }
+    .clip-card:hover .clip-play,
+    .clip-card:focus-visible .clip-play { opacity: 1; }
+    .clip-play span {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: white; color: var(--ink);
+      display: grid; place-items: center;
+      box-shadow: var(--shadow-md);
+    }
+    .clip-play svg { width: 28px; height: 28px; fill: currentColor; margin-left: 4px; }
+    .clip-body {
+      padding: 1.3rem 1.5rem 1.4rem;
+      display: flex; flex-direction: column; flex-grow: 1;
+    }
+    .clip-body .spec {
+      font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 700; color: var(--accent); margin-bottom: 0.3rem;
+    }
+    .clip-body h2 {
+      margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 700;
+      letter-spacing: -0.01em; color: var(--ink);
+    }
+    .clip-body p {
+      margin: 0 0 1rem; color: var(--ink-soft); font-size: 0.98rem; flex-grow: 1;
+    }
+    .clip-body .arrow { color: var(--accent); font-weight: 700; font-size: 0.92rem; }
+
+    /* How to compare */
+    .howto {
+      background: var(--surface); border-top: 1px solid var(--line);
+      padding: 3.5rem 2.5rem 4rem;
+    }
+    .howto-inner { max-width: 1100px; margin: 0 auto; }
+    .howto h2 {
+      font-size: clamp(1.7rem, 2.8vw, 2.2rem); font-weight: 700;
+      letter-spacing: -0.02em; margin: 0 0 0.5rem;
+    }
+    .howto .lead { color: var(--ink-soft); margin: 0 0 1.8rem; font-size: 1.05rem; max-width: 46rem; }
+    .howto ol {
+      margin: 0; padding: 0; list-style: none;
+      display: grid; gap: 0.9rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      counter-reset: tip;
+    }
+    .howto li {
+      counter-increment: tip;
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 1rem; padding: 1.2rem 1.4rem 1.2rem 3.4rem;
+      position: relative; color: var(--ink-soft); font-size: 0.98rem;
+    }
+    .howto li::before {
+      content: counter(tip);
+      position: absolute; left: 1.2rem; top: 1.15rem;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      background: var(--accent-soft); color: var(--accent);
+      font-weight: 800; font-size: 0.85rem;
+      display: grid; place-items: center;
+    }
+    .howto li strong { color: var(--ink); font-weight: 700; }
+
+    footer {
+      background: var(--ink); color: white;
+      padding: 2rem 2.5rem; text-align: center;
+    }
+    footer p { margin: 0 auto; font-size: 0.86rem; color: rgba(255, 255, 255, 0.82); max-width: 40rem; }
+    footer a { color: #8fb6ff; font-weight: 600; }
+    footer a:hover { color: white; }
+
+    @media (max-width: 900px) {
+      .topbar { padding: 0.7rem 1.2rem; }
+      .brand img { height: 2.6rem; }
+      .page-head { padding: 2.8rem 1.4rem 3rem; }
+      .clips, .howto { padding: 2.4rem 1.4rem 2.8rem; }
+    }
+    @media (max-width: 700px) {
+      .clip-grid { grid-template-columns: 1fr; }
+      .test-tag { font-size: 0.66rem; padding: 0.35rem 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="../" class="brand" aria-label="Jared Owen Animations — home">
+      <img src="../assets/logo.png" alt="Jared Owen Animations" />
+    </a>
+    <span class="test-tag">Internal test page</span>
+  </header>
+
+  <section class="page-head">
+    <div class="page-head-inner">
+      <div class="crumb">4K test &middot; Falkirk Wheel</div>
+      <h1>HD or 4K: which looks better on YouTube?</h1>
+      <p class="subhead">Four versions of the same 30-second Falkirk Wheel sequence. Open each one on YouTube, set the playback quality by hand, and compare them on the same screen.</p>
+    </div>
+  </section>
+
+  <section class="clips" aria-label="The four clips">
+    <p class="lead">Clip 1 is the baseline: the video as it is published today. Clips 2 and 3 take that same HD footage and upscale it to 4K in ffmpeg, without and with sharpening. Clip 4 is the real thing, re-rendered at 4K in Blender.</p>
+    <!-- Thumbnails hotlink YouTube's maxresdefault.jpg, verified present for all
+         four IDs on 2026-09-28. If one ever 404s, point that card at hqdefault.jpg,
+         which always exists (lower resolution, letterboxed). -->
+    <div class="clip-grid">
+
+      <a class="clip-card" href="https://www.youtube.com/watch?v=ucyw6GVifCE&amp;t=865s" target="_blank" rel="noreferrer">
+        <div class="clip-thumb">
+          <img src="https://i.ytimg.com/vi/ucyw6GVifCE/maxresdefault.jpg" alt="" width="1280" height="720" />
+          <span class="clip-num" aria-hidden="true">1</span>
+          <span class="clip-play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
+        </div>
+        <div class="clip-body">
+          <div class="spec">1080p &middot; as published</div>
+          <h2>Original HD upload</h2>
+          <p>The Falkirk Wheel video exactly as it appears on the channel today. The link jumps to 14:25, the same sequence used for the three test clips. Watch this one first so you have a reference for the others.</p>
+          <span class="arrow">Open on YouTube at 14:25 &rarr;</span>
+        </div>
+      </a>
+
+      <a class="clip-card" href="https://www.youtube.com/watch?v=Y76nb7V_Dxk" target="_blank" rel="noreferrer">
+        <div class="clip-thumb">
+          <img src="https://i.ytimg.com/vi/Y76nb7V_Dxk/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" />
+          <span class="clip-num" aria-hidden="true">2</span>
+          <span class="clip-play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
+        </div>
+        <div class="clip-body">
+          <div class="spec">2160p &middot; ffmpeg lanczos upscale</div>
+          <h2>Upscaled to 4K</h2>
+          <p>The same 1080p footage scaled up to 3840 &times; 2160 with ffmpeg's lanczos filter and nothing else changed. No new detail is added, so this isolates what YouTube's 4K processing does on its own.</p>
+          <span class="arrow">Open on YouTube &rarr;</span>
+        </div>
+      </a>
+
+      <a class="clip-card" href="https://www.youtube.com/watch?v=DhWpPijdWOU" target="_blank" rel="noreferrer">
+        <div class="clip-thumb">
+          <img src="https://i.ytimg.com/vi/DhWpPijdWOU/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" />
+          <span class="clip-num" aria-hidden="true">3</span>
+          <span class="clip-play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
+        </div>
+        <div class="clip-body">
+          <div class="spec">2160p &middot; ffmpeg upscale + sharpen</div>
+          <h2>Upscaled to 4K and sharpened</h2>
+          <p>The same lanczos upscale with a sharpening pass added in ffmpeg to bring back edge definition lost in the scale-up. Compare fine edges and text against clip 2 and look for halos, which mean it is over-sharpened.</p>
+          <span class="arrow">Open on YouTube &rarr;</span>
+        </div>
+      </a>
+
+      <a class="clip-card" href="https://www.youtube.com/watch?v=wDkiEZ87OPk" target="_blank" rel="noreferrer">
+        <div class="clip-thumb">
+          <img src="https://i.ytimg.com/vi/wDkiEZ87OPk/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" />
+          <span class="clip-num" aria-hidden="true">4</span>
+          <span class="clip-play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
+        </div>
+        <div class="clip-body">
+          <div class="spec">2160p &middot; native Blender render</div>
+          <h2>Rendered at 4K in Blender</h2>
+          <p>The sequence re-rendered from the original Blender scene at 3840 &times; 2160. This is true 4K detail, and the benchmark the two upscales are trying to approach. It is also the most expensive option in render time.</p>
+          <span class="arrow">Open on YouTube &rarr;</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="howto" aria-labelledby="howto-heading">
+    <div class="howto-inner">
+      <h2 id="howto-heading">How to compare fairly</h2>
+      <p class="lead">YouTube makes it easy to think you are watching 4K when you are not. A few habits keep the comparison honest.</p>
+      <ol>
+        <li><strong>Set the quality by hand.</strong> In the player, open the gear icon, choose Quality, and pick 2160p for clips 2 to 4 and 1080p for clip 1. The Auto setting often picks a lower stream, especially right after you seek.</li>
+        <li><strong>Give it a few seconds.</strong> After seeking, YouTube may briefly serve a lower-quality stream while it buffers. Wait, or scrub back a few seconds, before judging a frame.</li>
+        <li><strong>Pause on the same moment.</strong> Open each clip in its own tab and freeze on a matching frame. Thin edges such as railings and cables, sky and water gradients, and any on-screen text show differences most clearly.</li>
+        <li><strong>Know what your screen can show.</strong> On a 4K display you see the extra resolution. On a 1080p screen you mostly see the higher bitrate YouTube gives 4K uploads, which shows up as fewer compression artifacts and cleaner edges.</li>
+        <li><strong>Missing the 2160p option?</strong> YouTube processes the 4K version of an upload after the HD version. If 2160p is not in the menu yet, the upload is still processing. Check back later.</li>
+        <li><strong>Use the full screen.</strong> Watch each clip in fullscreen mode rather than the small embedded player, so the pixels are shown at the size a viewer would see them.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <p>Internal test page for the HD-vs-4K upload decision. It is not linked from the site and is tagged noindex. <a href="../">Back to the site</a></p>
+  </footer>
+</body>
+</html>
