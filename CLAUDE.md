@@ -133,7 +133,7 @@ Two copies of the site are still live and indexable and are *not* covered by eit
 In rough priority order — none of these are blocking the current state of the site.
 
 - [ ] **Store: Fourthwall → Shopify + Printify** (decided 2026-09-30 — see decisions log). Order matters:
-  1. Create the Shopify account (store stays behind its password page), connect Printify (**My stores → Add new store → Shopify**), publish products, design the theme to match the site (Inter Tight, `--ink` navy, `--accent` blue).
+  1. ✅ Shopify account created 2026-09-30 — admin address **`jaredowen3d.myshopify.com`** (renamed from the random `5nwy0q-wx`, which now just redirects). Store stays behind its password page. Next: connect Printify (**My stores → Add new store → Shopify**), publish products, design the theme to match the site (Inter Tight, `--ink` navy, `--accent` blue).
   2. Cutover day: remove the custom domain in Fourthwall → add `store.jaredowen3d.com` in Shopify (Settings → Domains) → in Cloudflare replace the `store` record with CNAME `store` → `shops.myshopify.com`, **DNS only (grey cloud)**. Touch nothing else in the zone (Zoho MX). Don't detach from Fourthwall early — the Store tab would hit an error page until Shopify is live.
   3. After launch: Shopify's **Google & YouTube** app → Merchant Center → YouTube Studio → Earn → Shopping, for the merch shelf. Videos/channel marked "made for kids" can't show the shelf — check the audience setting.
   4. Close the Fourthwall account.
