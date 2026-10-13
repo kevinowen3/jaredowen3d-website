@@ -15,7 +15,7 @@ Tick items with ✅ as they are done. Everything here lives in the Fourthwall da
 
 - [ ] **Walk the real storefront, not the Coming soon page.** In Site design, preview the home page, a product page, and the cart. Look for placeholder text, sample images, or default Fourthwall copy. Fourthwall's reviewers look at exactly this before releasing the first payout.
 - [ ] **Newsletter form on the live layout.** The September change only turned off the form on the Coming soon page. The live pages have their own setting. If there is still no plan to email people, turn it off there too.
-- [ ] **Shipping settings** (Settings, Shipping). Confirm which countries you ship to and what the customer pays. International is where surprises happen.
+- ✅ **Shipping settings** (Settings, Shipping). Checked 2026-10-13: all products are Fourthwall-fulfilled, so customers pay true cost by weight and nothing needed configuring. Country restriction left off (ships worldwide).
 - [ ] **Final product pass with the team.** Titles, main images, and prices are what the YouTube merch shelf shows, and changing them after Google's review can trigger another review. Descriptions can keep changing after launch.
 - [ ] **Unpublish anything not ready.** Every visible product at launch goes to the merch shelf and to Google's review.
 - [ ] **About section** filled in (Settings). Speeds up Fourthwall's first-payout review.
@@ -35,7 +35,7 @@ Tick items with ✅ as they are done. Everything here lives in the Fourthwall da
 
 ## Not blocking, but costs money
 
-- [ ] **Close the Shopify trial** (`jaredowen3d.myshopify.com`). It bills once the trial ends. The Printify store connected to it is unused. The original Printify Pop-Up Store (`jared-owen-animations.printify.me`) is separate; decide whether to keep it.
+- ✅ **Close the Shopify trial** (`jaredowen3d.myshopify.com`). Canceled 2026-10-13 after a single $1 charge. The Printify store connected to it is unused. The original Printify Pop-Up Store (`jared-owen-animations.printify.me`) is separate; decide whether to keep it.
 
 ## What to expect after launch
 
