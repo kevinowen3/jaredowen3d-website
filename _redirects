@@ -1,0 +1,4 @@
+# Short links, read by Cloudflare (Workers static assets). GitHub Pages ignores this file.
+# 302, not 301: browsers cache a 301 indefinitely, so a 302 keeps these retargetable.
+/store   https://store.jaredowen3d.com/  302
+/store/  https://store.jaredowen3d.com/  302
