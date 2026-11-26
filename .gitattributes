@@ -1,0 +1,17 @@
+# Line endings: LF in the repo and in the working tree.
+#
+# Adopted 2026-11-26. Every text file was already LF in git; 17 of the 19 were CRLF in
+# the working tree only because core.autocrlf=true converted them on checkout. So what a
+# file looked like on disk depended on each machine's git config, and nothing here said
+# which ending was intended.
+#
+# LF because that is what the Write tool and heredocs produce, and what the GitHub
+# Actions (ubuntu) write into stats.json and videos.json. With eol=lf a CRLF write no
+# longer shows as a diff and is committed as LF, whatever core.autocrlf says.
+# .vscode/settings.json sets files.eol so the editor creates new files the same way.
+* text=auto eol=lf
+
+# Never let the text heuristic touch these.
+*.jpg binary
+*.png binary
+*.mp4 binary

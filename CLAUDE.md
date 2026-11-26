@@ -96,6 +96,7 @@ Brand-specific accent colors (only on support.html):
 ## Conventions
 
 - **Inline CSS/JS per page**, accepting some duplication, until/unless maintenance becomes painful — at which point we extract a shared `styles.css`. We're not there yet.
+- **Every text file is LF**, in git and in the working tree. `.gitattributes` (`* text=auto eol=lf`, with jpg/png/mp4 marked `binary`) keeps it so whatever a tool or `core.autocrlf` does, and `.vscode/settings.json` (`files.eol`) makes new files start LF. That settings file is the one thing under `.vscode/` that `.gitignore` lets through. A new binary file type needs its own `binary` line in `.gitattributes`.
 - **No emojis in markup, copy, or commit messages** unless the user explicitly asks.
 - **Hero video must autoplay**: `autoplay muted playsinline loop preload="auto" tabindex="-1" aria-hidden="true"` — plus a small inline JS that calls `.play()` programmatically and falls back to the first user click if autoplay is blocked.
 - **A11y warnings are addressed for real**, not suppressed: e.g. opaque dark hover bgs instead of translucent white tints; real `<track>` elements pointing at empty `.vtt` stub files for decorative video.
